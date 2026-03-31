@@ -308,6 +308,14 @@ require_once '../config.php';
                 return;
             }
 
+            const email = prompt('Enter your email:');
+            const name = prompt('Enter your name:');
+            
+            if (!email || !name) {
+                alert('Email and name are required');
+                return;
+            }
+
             // Send to Stripe checkout
             fetch('/CircleUp/api/checkout.php', {
                 method: 'POST',
@@ -316,20 +324,31 @@ require_once '../config.php';
                 },
                 body: JSON.stringify({
                     items: cart.cart,
-                    email: prompt('Enter your email:'),
-                    name: prompt('Enter your name:')
+                    email: email,
+                    name: name
                 })
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.checkout_url) {
-                    window.location.href = data.checkout_url;
-                } else {
-                    alert('Error: ' + data.error);
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('HTTP error, status = ' + response.status);
+                }
+                return response.text();
+            })
+            .then(text => {
+                try {
+                    const data = JSON.parse(text);
+                    if (data.checkout_url) {
+                        window.location.href = data.checkout_url;
+                    } else {
+                        alert('Error: ' + (data.error || 'Unknown error'));
+                    }
+                } catch (e) {
+                    alert('Checkout error: Invalid response from server');
+                    console.log('Response:', text);
                 }
             })
             .catch(error => {
-                alert('Checkout error: ' + error);
+                alert('Checkout error: ' + error.message);
             });
         }
 

@@ -50,8 +50,8 @@ try {
     }
     
     // Stripe requires HTTPS URLs that are publicly accessible
-    // Use your domain name, not IP address
-    $base_url = 'https://www.peoplestar.com';
+    // Use webapps subdomain
+    $base_url = 'https://webapps.peoplestar.com';
     
     // Create Stripe session
     $session = \Stripe\Checkout\Session::create([
