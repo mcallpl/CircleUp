@@ -7,27 +7,151 @@ require_once '../config.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart — CircleUp</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="store.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body {
-            background: #fff !important;
+        :root {
+            --navy: #0a1628;
+            --navy-mid: #1a2744;
+            --navy-light: #243456;
+            --red: #b22234;
+            --red-bright: #e8293b;
+            --white: #f5f0e8;
+            --white-pure: #ffffff;
+            --gold: #c9a84c;
+            --gold-bright: #ffd700;
         }
 
-        .cart-container {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Barlow Condensed', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .flag-stripe-top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            z-index: 100;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--red) 0px,
+                var(--red) 33.33%,
+                var(--white-pure) 33.33%,
+                var(--white-pure) 66.66%,
+                var(--navy-mid) 66.66%,
+                var(--navy-mid) 100%
+            );
+        }
+
+        header {
+            position: fixed;
+            top: 6px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--navy-mid);
+            border-bottom: 2px solid var(--gold);
+            padding: 20px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--white-pure);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--red);
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .header-nav a {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: var(--white-pure);
+        }
+
+        .cart-btn {
+            width: 45px;
+            height: 45px;
+            background: var(--white-pure);
+            border: 2px solid var(--gold);
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .cart-btn:hover {
+            background: var(--gold);
+            box-shadow: 0 0 15px rgba(201, 168, 76, 0.6);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--gold);
+            color: var(--navy);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .container {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px;
+            margin: 85px auto 40px;
+            padding: 0 60px;
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 40px;
         }
 
-        .cart-items h2 {
-            font-family: 'Playfair Display', serif;
+        .section-title {
+            font-family: 'Oswald', sans-serif;
             font-size: 32px;
-            margin-bottom: 32px;
-            color: #1a1a1a;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--gold-bright);
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 15px;
         }
 
         .cart-item {
@@ -35,7 +159,7 @@ require_once '../config.php';
             grid-template-columns: 100px 1fr auto;
             gap: 20px;
             padding: 20px 0;
-            border-bottom: 1px solid #e8e8e8;
+            border-bottom: 1px solid var(--gold);
             align-items: start;
         }
 
@@ -46,12 +170,13 @@ require_once '../config.php';
         .cart-item-image {
             width: 100px;
             height: 100px;
-            background: #f5f5f5;
-            border-radius: 4px;
+            background: var(--navy-light);
+            border-radius: 2px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            border: 1px solid var(--gold);
         }
 
         .cart-item-image img {
@@ -62,14 +187,14 @@ require_once '../config.php';
 
         .cart-item-info h3 {
             font-size: 15px;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 8px;
-            color: #1a1a1a;
+            color: var(--white-pure);
         }
 
         .cart-item-info p {
             font-size: 13px;
-            color: #888;
+            color: var(--gold);
             margin-bottom: 12px;
         }
 
@@ -82,21 +207,30 @@ require_once '../config.php';
         .quantity-control button {
             width: 24px;
             height: 24px;
-            border: 1px solid #e0e0e0;
-            background: #fff;
+            border: 1px solid var(--gold);
+            background: var(--navy-light);
+            color: var(--white);
             cursor: pointer;
             border-radius: 2px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .quantity-control button:hover {
+            background: var(--red);
+            border-color: var(--red);
         }
 
         .quantity-control input {
             width: 32px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--gold);
             padding: 4px;
             text-align: center;
             font-size: 12px;
             border-radius: 2px;
+            background: var(--navy-light);
+            color: var(--white);
         }
 
         .cart-item-price {
@@ -104,16 +238,16 @@ require_once '../config.php';
         }
 
         .cart-item-price .price {
-            font-size: 15px;
-            font-weight: 600;
-            color: #1a1a1a;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gold-bright);
             margin-bottom: 8px;
         }
 
         .remove-btn {
             background: none;
             border: none;
-            color: #999;
+            color: var(--red);
             cursor: pointer;
             font-size: 12px;
             text-decoration: underline;
@@ -121,7 +255,7 @@ require_once '../config.php';
         }
 
         .remove-btn:hover {
-            color: #1a1a1a;
+            color: var(--red-bright);
         }
 
         .empty-cart {
@@ -130,31 +264,31 @@ require_once '../config.php';
         }
 
         .empty-cart h3 {
-            font-size: 20px;
-            color: #1a1a1a;
+            font-size: 24px;
+            color: var(--gold-bright);
             margin-bottom: 12px;
         }
 
         .empty-cart p {
-            color: #888;
+            color: var(--gold);
             margin-bottom: 24px;
         }
 
-        /* SIDEBAR */
         .order-summary {
-            background: #f5f5f5;
+            background: var(--navy-light);
             padding: 24px;
-            border-radius: 6px;
+            border-radius: 2px;
+            border: 1px solid var(--gold);
             height: fit-content;
             position: sticky;
-            top: 80px;
+            top: 90px;
         }
 
         .order-summary h3 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Oswald', sans-serif;
             font-size: 20px;
             margin-bottom: 24px;
-            color: #1a1a1a;
+            color: var(--gold-bright);
         }
 
         .summary-row {
@@ -165,53 +299,86 @@ require_once '../config.php';
         }
 
         .summary-row.total {
-            border-top: 1px solid #ddd;
+            border-top: 1px solid var(--gold);
             padding-top: 16px;
             margin-top: 16px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 16px;
         }
 
         .checkout-btn {
             width: 100%;
             padding: 14px;
-            background: #1a1a1a;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-weight: 600;
+            background: var(--red);
+            color: var(--white-pure);
+            border: 2px solid var(--gold);
+            border-radius: 2px;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
             cursor: pointer;
             margin-top: 24px;
-            transition: background 0.2s;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
         }
 
         .checkout-btn:hover {
-            background: #333;
+            background: var(--red-bright);
+            box-shadow: 0 0 15px rgba(232, 41, 59, 0.5);
         }
 
         .checkout-btn:disabled {
-            background: #ccc;
+            background: var(--gold);
             cursor: not-allowed;
+            box-shadow: none;
         }
 
         .continue-shopping {
             display: block;
             text-align: center;
             margin-top: 16px;
-            color: #666;
+            color: var(--gold);
             text-decoration: none;
-            font-size: 13px;
+            font-size: 12px;
             transition: color 0.2s;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .continue-shopping:hover {
-            color: #1a1a1a;
+            color: var(--white-pure);
+        }
+
+        footer {
+            background: var(--navy-mid);
+            border-top: 2px solid var(--gold);
+            padding: 40px 60px;
+            text-align: center;
+            color: var(--gold);
+            font-size: 11px;
+            letter-spacing: 1px;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        footer a:hover {
+            color: var(--white-pure);
         }
 
         @media (max-width: 768px) {
-            .cart-container {
+            header {
+                padding: 15px 30px;
+            }
+
+            .container {
                 grid-template-columns: 1fr;
-                padding: 20px;
+                padding: 0 30px;
             }
 
             .order-summary {
@@ -221,43 +388,49 @@ require_once '../config.php';
     </style>
 </head>
 <body>
-    <!-- HEADER -->
+    <div class="flag-stripe-top"></div>
+
     <header>
         <a href="/CircleUp/store/" class="logo">Circle<span>Up</span></a>
         <nav class="header-nav">
             <a href="/CircleUp/store/">Shop</a>
             <a href="/CircleUp/admin/login.php">Admin</a>
-            <div class="cart-btn">🛒<span class="cart-badge"></span></div>
+            <a href="/CircleUp/store/cart.php" style="position: relative;">
+                <div class="cart-btn">🛒<span class="cart-badge"></span></div>
+            </a>
         </nav>
     </header>
 
-    <!-- CART -->
-    <div style="margin-top: 60px;">
-        <div class="cart-container">
-            <div class="cart-items">
-                <h2>Your Cart</h2>
-                <div id="cart-list"></div>
-            </div>
+    <div style="margin-top: 76px;"></div>
 
-            <div class="order-summary">
-                <h3>Order Summary</h3>
-                <div class="summary-row">
-                    <span>Subtotal</span>
-                    <span id="subtotal">$0</span>
-                </div>
-                <div class="summary-row">
-                    <span>Shipping</span>
-                    <span>Free</span>
-                </div>
-                <div class="summary-row total">
-                    <span>Total</span>
-                    <span id="total-price">$0</span>
-                </div>
-                <button class="checkout-btn" id="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
-                <a href="/CircleUp/store/" class="continue-shopping">Continue Shopping</a>
+    <div class="container">
+        <div class="cart-items">
+            <h2 class="section-title">Your Cart</h2>
+            <div id="cart-list"></div>
+        </div>
+
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotal">$0</span>
             </div>
+            <div class="summary-row">
+                <span>Shipping</span>
+                <span>Free</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span id="total-price">$0</span>
+            </div>
+            <button class="checkout-btn" id="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+            <a href="/CircleUp/store/" class="continue-shopping">Continue Shopping</a>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2026 <a href="#">CircleUp</a> — Premium Apparel | <a href="/CircleUp/admin/login.php">Admin</a></p>
+    </footer>
 
     <script src="cart.js"></script>
     <script>
@@ -269,7 +442,7 @@ require_once '../config.php';
                     <div class="empty-cart">
                         <h3>Your cart is empty</h3>
                         <p>Add items to get started</p>
-                        <a href="/CircleUp/store/" class="cta-button">Continue Shopping</a>
+                        <a href="/CircleUp/store/" style="display: inline-block; padding: 11px 24px; background: var(--red); color: var(--white-pure); border: 2px solid var(--gold); border-radius: 2px; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 11px; cursor: pointer; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s;">Continue Shopping</a>
                     </div>
                 `;
                 document.getElementById('checkout-btn').disabled = true;
@@ -320,7 +493,6 @@ require_once '../config.php';
                 return;
             }
 
-            // Send to Stripe checkout
             fetch('/CircleUp/api/checkout.php', {
                 method: 'POST',
                 headers: {
@@ -356,34 +528,7 @@ require_once '../config.php';
             });
         }
 
-        // Initial render
         renderCart();
     </script>
-
-    <style>
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #1a1a1a;
-            color: #fff;
-            padding: 16px 24px;
-            border-radius: 4px;
-            font-size: 14px;
-            z-index: 10000;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-    </style>
 </body>
 </html>

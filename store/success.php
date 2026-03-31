@@ -8,11 +8,9 @@ if (!$session_id) {
     exit();
 }
 
-// Get session from Stripe
 try {
     $session = \Stripe\Checkout\Session::retrieve($session_id);
     
-    // Update order status
     $db = getDB();
     $stmt = $db->prepare("UPDATE orders SET status = 'completed' WHERE stripe_payment_intent_id = ?");
     $stmt->bind_param("s", $session->payment_intent);
@@ -32,8 +30,20 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmed — CircleUp</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --navy: #0a1628;
+            --navy-mid: #1a2744;
+            --navy-light: #243456;
+            --red: #b22234;
+            --red-bright: #e8293b;
+            --white: #f5f0e8;
+            --white-pure: #ffffff;
+            --gold: #c9a84c;
+            --gold-bright: #ffd700;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -41,44 +51,65 @@ try {
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: #fafafa;
-            color: #1a1a1a;
+            font-family: 'Barlow Condensed', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .flag-stripe-top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            z-index: 100;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--red) 0px,
+                var(--red) 33.33%,
+                var(--white-pure) 33.33%,
+                var(--white-pure) 66.66%,
+                var(--navy-mid) 66.66%,
+                var(--navy-mid) 100%
+            );
         }
 
         header {
-            background: #fff;
-            border-bottom: 1px solid #e8e8e8;
-            padding: 16px 40px;
+            background: var(--navy-mid);
+            border-bottom: 2px solid var(--gold);
+            padding: 20px 40px;
+            margin-top: 6px;
             text-align: center;
         }
 
         .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            font-weight: 600;
+            font-family: 'Oswald', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
             text-decoration: none;
-            color: #1a1a1a;
+            color: var(--white-pure);
         }
 
         .logo span {
-            color: #d4a574;
+            color: var(--red);
         }
 
         .success-container {
             max-width: 600px;
             margin: 80px auto;
             padding: 60px 40px;
-            background: #fff;
-            border-radius: 6px;
+            background: var(--navy-light);
+            border: 1px solid var(--gold);
+            border-radius: 2px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
         }
 
         .checkmark {
             width: 80px;
             height: 80px;
-            background: #d4a574;
+            background: var(--gold);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -88,24 +119,26 @@ try {
         }
 
         h1 {
-            font-family: 'Playfair Display', serif;
+            font-family: 'Oswald', sans-serif;
             font-size: 36px;
             margin-bottom: 12px;
+            color: var(--gold-bright);
         }
 
         .subtitle {
             font-size: 16px;
-            color: #666;
+            color: var(--gold);
             margin-bottom: 32px;
             line-height: 1.6;
         }
 
         .order-details {
-            background: #f5f5f5;
+            background: var(--navy-mid);
             padding: 24px;
-            border-radius: 4px;
+            border-radius: 2px;
             margin-bottom: 32px;
             text-align: left;
+            border: 1px solid var(--gold);
         }
 
         .detail-row {
@@ -117,9 +150,9 @@ try {
 
         .detail-row:last-child {
             margin-bottom: 0;
-            border-top: 1px solid #e0e0e0;
+            border-top: 1px solid var(--gold);
             padding-top: 16px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 16px;
         }
 
@@ -131,26 +164,53 @@ try {
 
         .btn {
             padding: 13px 28px;
-            border: 1px solid #e0e0e0;
-            background: #fff;
-            color: #1a1a1a;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 13px;
+            border: 2px solid var(--gold);
+            background: transparent;
+            color: var(--gold);
+            border-radius: 2px;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
             cursor: pointer;
             text-decoration: none;
-            transition: all 0.2s;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            display: inline-block;
         }
 
         .btn.primary {
-            background: #1a1a1a;
-            color: #fff;
-            border-color: #1a1a1a;
+            background: var(--red);
+            color: var(--white-pure);
+            border-color: var(--red);
         }
 
         .btn:hover {
-            background: #333;
-            border-color: #333;
+            background: var(--gold);
+            color: var(--navy);
+            border-color: var(--gold);
+        }
+
+        .btn.primary:hover {
+            background: var(--red-bright);
+            box-shadow: 0 0 15px rgba(232, 41, 59, 0.5);
+        }
+
+        footer {
+            background: var(--navy-mid);
+            border-top: 2px solid var(--gold);
+            padding: 40px 60px;
+            text-align: center;
+            color: var(--gold);
+            font-size: 11px;
+            letter-spacing: 1px;
+            margin-top: 60px;
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 700;
         }
 
         @media (max-width: 600px) {
@@ -174,6 +234,8 @@ try {
     </style>
 </head>
 <body>
+    <div class="flag-stripe-top"></div>
+
     <header>
         <a href="/CircleUp/store/" class="logo">Circle<span>Up</span></a>
     </header>
@@ -196,8 +258,12 @@ try {
 
         <div class="action-buttons">
             <a href="/CircleUp/store/" class="btn primary">Continue Shopping</a>
-            <a href="/" class="btn">Go Home</a>
+            <a href="/CircleUp/" class="btn">Go Home</a>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2026 <a href="#">CircleUp</a> — Premium Apparel | <a href="/CircleUp/admin/login.php">Admin</a></p>
+    </footer>
 </body>
 </html>
