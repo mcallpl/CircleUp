@@ -313,7 +313,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
 
         .product-image {
             width: 100%;
-            aspect-ratio: 0.75;
+            aspect-ratio: 1 / 1;
             background: #f0f0f0;
             border-radius: 6px;
             overflow: hidden;
@@ -328,7 +328,9 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         .product-image img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            padding: 12px;
+            background: #fff;
         }
 
         .product-image.empty {
