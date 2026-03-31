@@ -34,34 +34,68 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CircleUp Editor Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --navy: #0a1628;
+            --navy-mid: #1a2744;
+            --navy-light: #243456;
+            --red: #b22234;
+            --red-bright: #e8293b;
+            --white: #f5f0e8;
+            --white-pure: #ffffff;
+            --gold: #c9a84c;
+            --gold-bright: #ffd700;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'DM Sans', -apple-system, sans-serif;
-            background: #f5f7fa;
-            color: #333;
+            font-family: 'Barlow Condensed', sans-serif;
+            background: var(--navy);
+            color: var(--white);
         }
-        
+
+        /* PATRIOTIC STRIPE */
+        .flag-stripe-top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            z-index: 100;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--red) 0px,
+                var(--red) 33.33%,
+                var(--white-pure) 33.33%,
+                var(--white-pure) 66.66%,
+                var(--navy-mid) 66.66%,
+                var(--navy-mid) 100%
+            );
+        }
+
         .navbar {
-            background: white;
-            border-bottom: 1px solid #eee;
-            padding: 0 30px;
+            background: var(--navy-mid);
+            border-bottom: 2px solid var(--gold);
+            padding: 0 40px;
             height: 70px;
+            margin-top: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-        
+
         .navbar h1 {
-            font-size: 24px;
-            color: #667eea;
+            font-family: 'Oswald', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--gold-bright);
         }
 
         .navbar-center {
@@ -71,215 +105,246 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
         }
 
         .navbar-center a {
-            font-size: 13px;
-            font-weight: 600;
-            color: #666;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gold);
             text-decoration: none;
-            transition: color 0.2s;
-            letter-spacing: 0.5px;
+            transition: color 0.3s;
         }
 
         .navbar-center a:hover {
-            color: #667eea;
+            color: var(--white-pure);
         }
-        
+
         .navbar-right {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 25px;
         }
-        
+
         .admin-info {
             text-align: right;
         }
-        
+
         .admin-info p {
-            font-size: 14px;
-            color: #666;
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--gold);
         }
-        
+
         .admin-info strong {
             display: block;
-            color: #333;
+            font-size: 14px;
+            color: var(--white-pure);
+            margin-top: 3px;
         }
-        
+
         .role-badge {
             display: inline-block;
-            padding: 4px 12px;
-            background: #667eea;
-            color: white;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+            padding: 5px 12px;
+            background: var(--red);
+            color: var(--white-pure);
+            border: 1px solid var(--gold);
+            border-radius: 2px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            margin-top: 4px;
+            margin-top: 3px;
         }
-        
+
         .logout-btn {
-            background: #ff6b6b;
-            color: white;
-            border: none;
+            background: var(--red);
+            color: var(--white-pure);
+            border: 2px solid var(--gold);
             padding: 8px 16px;
-            border-radius: 6px;
+            border-radius: 2px;
             cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s;
+            font-family: 'Oswald', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
         }
-        
+
         .logout-btn:hover {
-            background: #ff5252;
+            background: var(--red-bright);
+            box-shadow: 0 0 15px rgba(232, 41, 59, 0.5);
         }
-        
+
         .container {
             max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
+            margin: 40px auto;
+            padding: 0 40px;
         }
-        
+
+        .alert {
+            background: rgba(201, 168, 76, 0.1);
+            border-left: 4px solid var(--gold);
+            padding: 16px;
+            border-radius: 2px;
+            margin-bottom: 30px;
+            font-size: 13px;
+            color: var(--gold);
+        }
+
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
         }
-        
+
         .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background: var(--navy-light);
+            padding: 28px;
+            border: 1px solid var(--gold);
+            border-radius: 2px;
         }
-        
+
         .stat-label {
-            font-size: 13px;
-            color: #666;
+            font-size: 11px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            color: var(--gold);
+            margin-bottom: 12px;
+            font-weight: 700;
         }
-        
+
         .stat-value {
-            font-size: 32px;
-            font-weight: 600;
-            color: #667eea;
+            font-family: 'Oswald', sans-serif;
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--gold-bright);
         }
-        
+
+        .section-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--gold-bright);
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 15px;
+        }
+
         .card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            background: var(--navy-light);
+            padding: 28px;
+            border-radius: 2px;
+            border: 1px solid var(--gold);
             margin-bottom: 30px;
         }
-        
-        .card h2 {
+
+        .card h3 {
+            color: var(--gold-bright);
             margin-bottom: 20px;
-            font-size: 20px;
+            font-family: 'Oswald', sans-serif;
         }
-        
+
         .btn {
             display: inline-block;
-            padding: 10px 20px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 6px;
+            padding: 11px 24px;
+            background: var(--red);
+            color: var(--white-pure);
+            border: 2px solid var(--gold);
+            border-radius: 2px;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
             text-decoration: none;
-            transition: background 0.2s;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s;
         }
-        
+
         .btn:hover {
-            background: #5568d3;
+            background: var(--red-bright);
+            box-shadow: 0 0 15px rgba(232, 41, 59, 0.5);
         }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        
+
         thead {
-            background: #f5f7fa;
+            background: var(--navy-mid);
         }
-        
+
         th {
-            padding: 12px;
+            padding: 14px;
             text-align: left;
-            font-weight: 600;
-            color: #333;
-            font-size: 13px;
+            font-weight: 700;
+            color: var(--gold);
+            font-size: 11px;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid #eee;
+            border-bottom: 2px solid var(--gold);
         }
-        
+
         td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .action-links {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .action-links a {
-            color: #667eea;
-            text-decoration: none;
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--gold);
             font-size: 13px;
-            font-weight: 600;
         }
-        
-        .action-links a:hover {
-            text-decoration: underline;
-        }
-        
+
         .status {
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 2px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
-        
+
         .status.pending {
-            background: #fff3cd;
-            color: #856404;
+            background: rgba(232, 41, 59, 0.2);
+            color: var(--red-bright);
+            border: 1px solid var(--red);
         }
-        
+
         .status.completed {
-            background: #d4edda;
-            color: #155724;
+            background: rgba(201, 168, 76, 0.2);
+            color: var(--gold);
+            border: 1px solid var(--gold);
         }
-        
-        .status.shipped {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-        
-        .status.cancelled {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .warning-box {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-        
-        .warning-box p {
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: var(--gold);
             font-size: 14px;
-            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+                flex-direction: column;
+                height: auto;
+                gap: 15px;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="flag-stripe-top"></div>
+
     <div class="navbar">
         <h1>CircleUp Editor</h1>
         <div class="navbar-center">
@@ -297,12 +362,12 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
             </form>
         </div>
     </div>
-    
+
     <div class="container">
-        <div class="warning-box">
-            <p><strong>ℹ️ Editor Mode:</strong> You can add, edit, and delete products. You can view orders and revenue. You cannot change admin settings or user accounts.</p>
+        <div class="alert">
+            ℹ️ Editor Mode: You can manage products and view orders & revenue. You cannot change admin settings.
         </div>
-        
+
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-label">Total Products</div>
@@ -318,20 +383,13 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
             </div>
             <div class="stat-card">
                 <div class="stat-label">Total Revenue</div>
-                <div class="stat-value">$<?php echo number_format($stats['total_revenue'], 2); ?></div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Pending Orders</div>
-                <div class="stat-value"><?php echo $stats['pending_orders']; ?></div>
+                <div class="stat-value">$<?php echo number_format($stats['total_revenue'], 0); ?></div>
             </div>
         </div>
-        
+
         <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>Products</h2>
-                <a href="/CircleUp/admin/product-form.php" class="btn">+ Add Product</a>
-            </div>
-            
+            <h3>Products</h3>
+            <a href="/CircleUp/admin/product-form.php" class="btn">+ Add Product</a>
             <?php if (!empty($recent_products)): ?>
                 <table>
                     <thead>
@@ -346,27 +404,25 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
                     <tbody>
                         <?php foreach ($recent_products as $product): ?>
                             <tr>
-                                <td><strong><?php echo htmlspecialchars($product['name']); ?></strong></td>
+                                <td style="font-weight: 700;"><?php echo htmlspecialchars($product['name']); ?></td>
                                 <td><?php echo htmlspecialchars(PRODUCT_CATEGORIES[$product['category']] ?? $product['category']); ?></td>
-                                <td>$<?php echo number_format($product['price'], 2); ?></td>
+                                <td>$<?php echo number_format($product['price'], 0); ?></td>
                                 <td><?php echo date('M d, Y', strtotime($product['created_at'])); ?></td>
                                 <td>
-                                    <div class="action-links">
-                                        <a href="/CircleUp/admin/product-form.php?id=<?php echo $product['id']; ?>">Edit</a>
-                                        <a href="/CircleUp/admin/delete-product.php?id=<?php echo $product['id']; ?>" onclick="return confirm('Delete product?')">Delete</a>
-                                    </div>
+                                    <a href="/CircleUp/admin/product-form.php?id=<?php echo $product['id']; ?>" style="color: var(--gold); text-decoration: none; font-weight: 700;">Edit</a> | 
+                                    <a href="/CircleUp/admin/delete-product.php?id=<?php echo $product['id']; ?>" style="color: var(--red-bright); text-decoration: none; font-weight: 700;" onclick="return confirm('Delete?')">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             <?php else: ?>
-                <p style="padding: 20px; color: #666; text-align: center;">No products yet. Click "+ Add Product" to create your first one.</p>
+                <div class="empty">No products yet</div>
             <?php endif; ?>
         </div>
-        
+
         <div class="card">
-            <h2>Recent Orders</h2>
+            <h3>Recent Orders</h3>
             <?php if (!empty($recent_orders)): ?>
                 <table>
                     <thead>
@@ -381,7 +437,7 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
                     <tbody>
                         <?php foreach ($recent_orders as $order): ?>
                             <tr>
-                                <td><strong>#<?php echo htmlspecialchars($order['order_number']); ?></strong></td>
+                                <td style="font-weight: 700;">#<?php echo htmlspecialchars($order['order_number']); ?></td>
                                 <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
                                 <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
                                 <td><span class="status <?php echo $order['status']; ?>"><?php echo ucfirst($order['status']); ?></span></td>
@@ -391,7 +447,7 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
                     </tbody>
                 </table>
             <?php else: ?>
-                <p style="padding: 20px; color: #666; text-align: center;">No orders yet</p>
+                <div class="empty">No orders yet</div>
             <?php endif; ?>
         </div>
     </div>
