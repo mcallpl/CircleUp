@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>#CircleUp — Make United Again</title>
+    <title>Make 🇺🇸 United Again, #CircleUp</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Teko:wght@400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -203,7 +203,6 @@
         .hero-title {
             font-family: 'Oswald', sans-serif;
             font-weight: 700;
-            text-transform: uppercase;
             text-align: center;
             line-height: 1;
             opacity: 0;
@@ -211,28 +210,11 @@
         }
 
         .hero-title .line1 {
-            font-size: clamp(2rem, 6vw, 5rem);
-            letter-spacing: 0.15em;
-            color: var(--silver-light);
+            font-size: clamp(2.2rem, 6.5vw, 5.5rem);
+            letter-spacing: 0.08em;
             display: block;
-            text-shadow: 0 2px 20px rgba(192, 192, 192, 0.3);
-        }
-
-        .hero-title .flag-emoji {
-            font-size: clamp(2.5rem, 7vw, 6rem);
-            display: inline-block;
-            animation: flagWave 2s ease-in-out infinite;
-            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
-        }
-
-        @keyframes flagWave {
-            0%, 100% { transform: rotate(-3deg) scale(1); }
-            50% { transform: rotate(3deg) scale(1.05); }
-        }
-
-        .hero-title .line2 {
-            font-size: clamp(3.5rem, 10vw, 9rem);
-            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.15em;
             background: linear-gradient(
                 180deg,
                 var(--white-pure) 0%,
@@ -243,8 +225,23 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             filter: drop-shadow(0 4px 30px rgba(255,255,255,0.15));
-            display: block;
-            margin: 0.1em 0;
+        }
+
+        .hero-title .flag-emoji {
+            font-size: 1.15em;
+            display: inline-block;
+            animation: flagWave 2s ease-in-out infinite;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+            -webkit-text-fill-color: initial;
+            vertical-align: middle;
+            margin: 0 0.05em;
+            position: relative;
+            top: -13px;
+        }
+
+        @keyframes flagWave {
+            0%, 100% { transform: rotate(-3deg) scale(1); }
+            50% { transform: rotate(3deg) scale(1.05); }
         }
 
         .hero-title .line3 {
@@ -267,6 +264,20 @@
             color: var(--gold);
             -webkit-text-fill-color: var(--gold);
             text-shadow: 0 0 20px rgba(201, 168, 76, 0.4);
+        }
+
+        .hero-title .circle-white {
+            background: linear-gradient(180deg, var(--white-pure) 0%, var(--silver) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-title .up-red {
+            background: linear-gradient(180deg, var(--red-bright) 0%, var(--red) 50%, var(--red-deep) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         @keyframes heroReveal {
@@ -751,6 +762,8 @@
             height: 18px;
             vertical-align: middle;
             margin: 0 0.3rem;
+            position: relative;
+            top: -2px;
         }
 
         .def-chain-icon svg {
@@ -759,6 +772,7 @@
             fill: none;
             stroke: var(--gold);
             stroke-width: 2.5;
+            display: block;
         }
 
         /* Star divider row */
@@ -961,10 +975,8 @@
 
             <!-- Title -->
             <h1 class="hero-title">
-                <span class="line1">Make</span>
-                <span class="line1"><span class="flag-emoji">🇺🇸</span></span>
-                <span class="line2">United Again</span>
-                <span class="line3"><span class="hash">#</span>CircleUp</span>
+                <span class="line1">Make <span class="flag-emoji">🇺🇸</span> United Again,</span>
+                <span class="line3"><span class="hash">#</span><span class="circle-white">Circle</span><span class="up-red">Up</span></span>
             </h1>
 
             <!-- Chain divider -->

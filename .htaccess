@@ -1,0 +1,42 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /CircleUp/
+
+# Allow admin and api and store directories
+RewriteRule ^admin/ - [L]
+RewriteRule ^api/ - [L]
+RewriteRule ^store/ - [L]
+RewriteRule ^uploads/ - [L]
+RewriteRule ^vendor/ - [L]
+
+# Skip actual files and directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Route to store
+RewriteRule ^(.*)$ store/index.php [L,QSA]
+</IfModule>
+
+# Prevent access to sensitive files
+<FilesMatch "^\.env|config\.php|composer\.(json|phar|lock)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Enable gzip compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
+</IfModule>
+
+# Cache control
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+DirectoryIndex index.html index.php
