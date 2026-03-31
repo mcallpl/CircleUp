@@ -94,7 +94,7 @@ try {
             throw new Exception("Prepare failed: " . $db->error);
         }
         
-        $stmt->bind_param("iid", $order_id, $product_id, $qty, $price);
+        $stmt->bind_param("iiid", $order_id, $product_id, $qty, $price);
         
         if (!$stmt->execute()) {
             throw new Exception("Execute failed: " . $stmt->error);
