@@ -150,7 +150,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         .cart-btn {
             width: 45px;
             height: 45px;
-            background: var(--red);
+            background: var(--white-pure);
             border: 2px solid var(--gold);
             border-radius: 2px;
             display: flex;
@@ -163,8 +163,8 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         }
 
         .cart-btn:hover {
-            background: var(--red-bright);
-            box-shadow: 0 0 15px rgba(232, 41, 59, 0.6);
+            background: var(--gold);
+            box-shadow: 0 0 15px rgba(201, 168, 76, 0.6);
         }
 
         .cart-badge {
