@@ -27,10 +27,8 @@ CircleUp is a fully functional e-commerce platform built for selling premium app
 
 ### Credentials
 
-All credentials are stored in the vault and auto-loaded:
-- **Database:** mcallpl / REDACTED
-- **Stripe Secret:** REDACTED_STRIPE_KEY
-- **Stripe Publishable:** REDACTED_STRIPE_PK
+All credentials are stored in `config.php` on the server (not in git).
+See the server's `config.php` for database, Stripe, and other keys.
 
 ---
 
@@ -291,7 +289,7 @@ Already in `.gitignore`:
 ## 🚨 Troubleshooting
 
 ### Admin Login Not Working
-- Check database: `mysql -u mcallpl -p'REDACTED' circleup`
+- Check database: `mysql -u [user] -p circleup` (credentials in server config.php)
 - Verify admin user exists: `SELECT * FROM admins WHERE username = 'mcallpl';`
 - Reset password: `UPDATE admins SET password_hash = '$2y$12$...' WHERE username = 'mcallpl';`
 

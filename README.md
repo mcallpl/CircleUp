@@ -118,8 +118,7 @@ Monitor all transactions: https://dashboard.stripe.com/
 ## 🗄️ Database
 
 **Database:** `circleup`  
-**User:** `mcallpl`  
-**Password:** `REDACTED`
+Credentials in `config.php` on server (not in git).
 
 ### Tables
 
@@ -156,19 +155,8 @@ rsync -avz --delete . root@64.227.108.128:/var/www/html/CircleUp/
 
 ## 🔐 Credentials
 
-### Database
-```
-Host: localhost
-User: mcallpl
-Pass: REDACTED
-DB: circleup
-```
-
-### Stripe
-All keys in `config.php` (not committed to GitHub)
-- **Secret Key:** sk_live_51RfnHU2K...
-- **Publishable Key:** pk_live_51RfnHU2K...
-- **Webhook Secret:** whsec_kCuJTBZC...
+All credentials (database, Stripe, admin) are stored in `config.php` on the server.
+`config.php` is excluded from git — see server directly for credentials.
 
 ### Admin
 ```
@@ -209,7 +197,8 @@ View: Total Revenue, Orders, Pending Orders
 
 ### View Orders in Database
 ```bash
-mysql -u mcallpl -p'REDACTED' circleup
+ssh root@64.227.108.128
+mysql -u [user] -p circleup
 SELECT o.order_number, o.customer_name, o.total_amount, o.status 
 FROM orders o 
 ORDER BY o.created_at DESC;
@@ -221,8 +210,8 @@ ORDER BY o.created_at DESC;
 
 ### Admin login fails
 ```bash
-# Check admin exists
-mysql -u mcallpl -p'REDACTED' circleup
+# Check admin exists (SSH to server first)
+mysql -u [user] -p circleup
 SELECT * FROM admins;
 
 # Reset password if needed
@@ -320,7 +309,7 @@ Black, White, Navy, Gray, Red, Blue, Green, Yellow, Purple, Pink, Orange, Brown
 ## 📞 Support
 
 - **Server SSH:** `ssh root@64.227.108.128`
-- **Database:** `mysql -u mcallpl -p'REDACTED' circleup`
+- **Database:** `mysql -u [user] -p circleup` (credentials in server config.php)
 - **Logs:** `/var/log/apache2/error.log`
 - **Stripe Support:** https://support.stripe.com/
 

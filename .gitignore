@@ -18,5 +18,9 @@ composer.lock
 deploy-web.sh
 deploy-sync.sh
 
+# Operational docs with credentials (stay local only)
+ADMIN-REFERENCE.txt
+SETUP-CHECKLIST.md
+
 # Uploads (managed on server, not in git)
 uploads/
