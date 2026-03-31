@@ -37,10 +37,15 @@ function loginAdmin($username, $password) {
     // Set session
     $_SESSION['admin_id'] = $admin['id'];
     $_SESSION['admin_username'] = $admin['username'];
-    
+
+    // Track login count and last login time
+    $stmt2 = $db->prepare("UPDATE admins SET login_count = login_count + 1, last_login_at = NOW() WHERE id = ?");
+    $stmt2->bind_param("i", $admin['id']);
+    $stmt2->execute();
+
     // Log login
     logAction($admin['id'], 'admin_login', ['username' => $username]);
-    
+
     return true;
 }
 

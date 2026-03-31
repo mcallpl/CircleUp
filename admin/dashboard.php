@@ -23,6 +23,9 @@ $stats = [
 
 // Recent orders
 $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.total_amount, o.status, o.created_at FROM orders o ORDER BY o.created_at DESC LIMIT 5")->fetch_all(MYSQLI_ASSOC);
+
+// All users with login activity
+$all_users = $db->query("SELECT username, email, role, login_count, last_login_at, created_at FROM admins ORDER BY last_login_at DESC")->fetch_all(MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -291,6 +294,18 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
             border: 1px solid var(--gold);
         }
 
+        .status.admin {
+            background: rgba(201, 168, 76, 0.2);
+            color: var(--gold-bright);
+            border: 1px solid var(--gold);
+        }
+
+        .status.editor {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border: 1px solid var(--white);
+        }
+
         .empty {
             text-align: center;
             padding: 40px;
@@ -385,6 +400,36 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
                     </table>
                 <?php else: ?>
                     <div class="empty">No orders yet</div>
+                <?php endif; ?>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--gold-bright); margin-bottom: 20px; font-family: 'Oswald', sans-serif;">User Activity</h3>
+                <?php if (!empty($all_users)): ?>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Login Count</th>
+                                <th>Last Login</th>
+                                <th>Account Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($all_users as $user): ?>
+                                <tr>
+                                    <td style="font-weight: 700;"><?php echo htmlspecialchars($user['username']); ?></td>
+                                    <td><span class="status <?php echo $user['role']; ?>"><?php echo ucfirst($user['role']); ?></span></td>
+                                    <td><?php echo $user['login_count']; ?></td>
+                                    <td><?php echo $user['last_login_at'] ? date('M d, Y g:i A', strtotime($user['last_login_at'])) : 'Never'; ?></td>
+                                    <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <div class="empty">No users found</div>
                 <?php endif; ?>
             </div>
 
