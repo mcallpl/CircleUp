@@ -510,9 +510,11 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
     <header>
         <a href="/CircleUp/store/" class="logo">Circle<span>Up</span></a>
         <nav class="header-nav">
-            <a href="#all">Shop</a>
+            <a href="/CircleUp/store/">Shop</a>
             <a href="/CircleUp/admin/login.php">Admin</a>
-            <div class="cart-btn">🛒</div>
+            <a href="/CircleUp/store/cart.php" style="position: relative;">
+                <div class="cart-btn">🛒<span class="cart-badge" style="position: absolute; top: -6px; right: -6px; background: #d4a574; color: #1a1a1a; width: 20px; height: 20px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 11px; font-weight: 600;"></span></div>
+            </a>
         </nav>
     </header>
 
@@ -583,7 +585,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
                                     <div class="product-price">
                                         $<?php echo number_format($product['price'], 0); ?>
                                     </div>
-                                    <button class="add-to-cart" onclick="addToCart(<?php echo $product['id']; ?>)">
+                                    <button class="add-to-cart" onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo htmlspecialchars($product['name']); ?>', <?php echo $product['price']; ?>, '<?php echo htmlspecialchars($product['category']); ?>', '<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>')">
                                         Add
                                     </button>
                                 </div>
@@ -606,10 +608,31 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         <p>&copy; 2026 <a href="#">CircleUp</a> | Premium apparel for high performers</p>
     </footer>
 
-    <script>
-        function addToCart(productId) {
-            alert('Add to cart coming soon');
+    <script src="cart.js"></script>
+    <style>
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 16px 24px;
+            border-radius: 4px;
+            font-size: 14px;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
         }
-    </script>
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
 </body>
 </html>
