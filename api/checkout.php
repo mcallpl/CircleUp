@@ -26,7 +26,7 @@ try {
     foreach ($data['items'] as $item) {
         if (!isset($item['id']) || !isset($item['price'])) continue;
         
-        $quantity = $item['quantity'] ?? 1;
+        $quantity = intval($item['quantity'] ?? 1);
         $price = floatval($item['price']);
         
         $line_items[] = [
@@ -35,9 +35,9 @@ try {
                 'product_data' => [
                     'name' => $item['name'] ?? 'Product',
                 ],
-                'unit_amount' => intval($price * 100), // Convert to cents
+                'unit_amount' => intval($price * 100),
             ],
-            'quantity' => intval($quantity),
+            'quantity' => $quantity,
         ];
         
         $total_amount += $price * $quantity;
@@ -49,11 +49,9 @@ try {
         exit();
     }
     
-    // Stripe requires HTTPS URLs that are publicly accessible
-    // Use webapps subdomain
+    // Create Stripe session
     $base_url = 'https://webapps.peoplestar.com';
     
-    // Create Stripe session
     $session = \Stripe\Checkout\Session::create([
         'payment_method_types' => ['card'],
         'line_items' => $line_items,
@@ -63,15 +61,24 @@ try {
         'customer_email' => $data['email'] ?? '',
     ]);
     
-    // Create order record in database
+    // Create order in database
     $order_number = 'ORD-' . date('Ymd') . '-' . str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
     $status = 'pending';
     $customer_email = $data['email'] ?? '';
     $customer_name = $data['name'] ?? '';
+    $stripe_payment_intent = $session->payment_intent;
     
     $stmt = $db->prepare("INSERT INTO orders (order_number, stripe_payment_intent_id, customer_email, customer_name, total_amount, status) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssds", $order_number, $session->payment_intent, $customer_email, $customer_name, $total_amount, $status);
-    $stmt->execute();
+    if (!$stmt) {
+        throw new Exception("Prepare failed: " . $db->error);
+    }
+    
+    $stmt->bind_param("ssssds", $order_number, $stripe_payment_intent, $customer_email, $customer_name, $total_amount, $status);
+    
+    if (!$stmt->execute()) {
+        throw new Exception("Execute failed: " . $stmt->error);
+    }
+    
     $order_id = $db->insert_id;
     
     // Create order items
@@ -79,12 +86,19 @@ try {
         if (!isset($item['id'])) continue;
         
         $product_id = intval($item['id']);
-        $quantity = intval($item['quantity'] ?? 1);
+        $qty = intval($item['quantity'] ?? 1);
         $price = floatval($item['price']);
         
         $stmt = $db->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("iid", $order_id, $product_id, $quantity, $price);
-        $stmt->execute();
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . $db->error);
+        }
+        
+        $stmt->bind_param("iid", $order_id, $product_id, $qty, $price);
+        
+        if (!$stmt->execute()) {
+            throw new Exception("Execute failed: " . $stmt->error);
+        }
     }
     
     echo json_encode([
@@ -96,7 +110,7 @@ try {
     
 } catch (\Stripe\Exception\ApiErrorException $e) {
     http_response_code(400);
-    echo json_encode(['error' => 'Payment error: ' . $e->getMessage()]);
+    echo json_encode(['error' => 'Stripe error: ' . $e->getMessage()]);
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(['error' => 'Server error: ' . $e->getMessage()]);
