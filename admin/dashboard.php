@@ -59,6 +59,25 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
             font-size: 24px;
             color: #667eea;
         }
+
+        .navbar-center {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .navbar-center a {
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar-center a:hover {
+            color: #667eea;
+        }
         
         .navbar-right {
             display: flex;
@@ -260,6 +279,10 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
 <body>
     <div class="navbar">
         <h1>CircleUp Admin</h1>
+        <div class="navbar-center">
+            <a href="/CircleUp/">Home</a>
+            <a href="/CircleUp/store/">Store</a>
+        </div>
         <div class="navbar-right">
             <div class="admin-info">
                 <p>Welcome</p>
