@@ -66,9 +66,26 @@ function getCurrentAdmin() {
     }
     
     $db = getDB();
-    $stmt = $db->prepare("SELECT id, username, email FROM admins WHERE id = ?");
+    $stmt = $db->prepare("SELECT id, username, email, role FROM admins WHERE id = ?");
     $stmt->bind_param("i", $_SESSION['admin_id']);
     $stmt->execute();
     
     return $stmt->get_result()->fetch_assoc();
+}
+
+function isEditor() {
+    $admin = getCurrentAdmin();
+    return $admin && $admin['role'] === 'editor';
+}
+
+function isAdminUser() {
+    $admin = getCurrentAdmin();
+    return $admin && $admin['role'] === 'admin';
+}
+
+function requireEditor() {
+    if (!isAdminLoggedIn() || !isEditor()) {
+        header('Location: /CircleUp/admin/login.php');
+        exit();
+    }
 }

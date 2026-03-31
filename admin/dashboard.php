@@ -7,6 +7,12 @@ requireAdmin();
 $db = getDB();
 $admin = getCurrentAdmin();
 
+// Route editors to their dashboard
+if ($admin['role'] === 'editor') {
+    header('Location: /CircleUp/admin/editor-dashboard.php');
+    exit();
+}
+
 // Dashboard stats
 $stats = [
     'total_products' => $db->query("SELECT COUNT(*) as count FROM products")->fetch_assoc()['count'],

@@ -94,7 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             logAction($admin['id'], 'product_' . ($product ? 'updated' : 'created'), ['product_id' => $product_id, 'name' => $name]);
             $success = 'Product ' . ($product ? 'updated' : 'created') . ' successfully!';
             
-            header("Location: /CircleUp/admin/product.php?id=$product_id&success=1");
+            $redirect = $admin['role'] === 'editor' ? '/CircleUp/admin/editor-dashboard.php' : '/CircleUp/admin/dashboard.php';
+            header("Location: $redirect?success=1");
             exit();
         } else {
             $error = 'Failed to save product: ' . $db->error;
@@ -429,7 +430,7 @@ $is_edit = $product !== null;
                     <button type="submit" class="btn btn-primary">
                         <?php echo $is_edit ? 'Update Product' : 'Create Product'; ?>
                     </button>
-                    <a href="/CircleUp/admin/dashboard.php" class="btn btn-secondary">Cancel</a>
+                    <a href="<?php echo $admin['role'] === 'editor' ? '/CircleUp/admin/editor-dashboard.php' : '/CircleUp/admin/dashboard.php'; ?>" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>
