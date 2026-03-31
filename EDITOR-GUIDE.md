@@ -14,15 +14,18 @@ The **Editor** role is a restricted account designed for team members who manage
 - **Delete Products** — Remove products from the catalog
 - **Manage Variants** — Create and manage sizes, colors, and stock levels
 - **View Products** — See all products and their information
+- **View Orders** — See all customer orders and status
+- **View Revenue** — Access sales analytics and revenue reports
+- **Track Pending Orders** — Monitor orders waiting for processing
 
 ### ❌ What Editors CANNOT Do
-- View orders or customer information
-- Access revenue reports or sales analytics
 - Change admin settings or configurations
 - Create or manage admin/editor accounts
-- View payment information or Stripe details
+- View payment details or Stripe information
 - Access audit logs
-- Change system settings
+- Change database structure
+- Modify system settings
+- Update order status (read-only viewing)
 
 ---
 
@@ -41,9 +44,16 @@ Password: Trucker
 
 When you log in, you'll see:
 
+### Stats Section
 - **Total Products** — Number of products in catalog
 - **Total Variants** — Number of size/color combinations
-- **Products Table** — All products with quick actions
+- **Total Orders** — All orders (completed + pending)
+- **Total Revenue** — Sum of all completed sales
+- **Pending Orders** — Orders waiting for processing
+
+### Content Sections
+- **Products Table** — All products with quick edit/delete actions
+- **Recent Orders Table** — Last 5 orders with status
 
 ---
 

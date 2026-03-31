@@ -17,10 +17,16 @@ if ($admin['role'] !== 'editor') {
 $stats = [
     'total_products' => $db->query("SELECT COUNT(*) as count FROM products")->fetch_assoc()['count'],
     'total_variants' => $db->query("SELECT COUNT(*) as count FROM variants")->fetch_assoc()['count'],
+    'total_orders' => $db->query("SELECT COUNT(*) as count FROM orders WHERE status != 'cancelled'")->fetch_assoc()['count'],
+    'total_revenue' => $db->query("SELECT SUM(total_amount) as total FROM orders WHERE status = 'completed'")->fetch_assoc()['total'] ?? 0,
+    'pending_orders' => $db->query("SELECT COUNT(*) as count FROM orders WHERE status = 'pending'")->fetch_assoc()['count'],
 ];
 
 // Recent products
 $recent_products = $db->query("SELECT p.id, p.name, p.price, p.category, p.created_at FROM products p ORDER BY p.created_at DESC LIMIT 10")->fetch_all(MYSQLI_ASSOC);
+
+// Recent orders
+$recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.total_amount, o.status, o.created_at FROM orders o ORDER BY o.created_at DESC LIMIT 5")->fetch_all(MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -212,6 +218,34 @@ $recent_products = $db->query("SELECT p.id, p.name, p.price, p.category, p.creat
             text-decoration: underline;
         }
         
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status.completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.shipped {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status.cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
         .warning-box {
             background: #fff3cd;
             border-left: 4px solid #ffc107;
@@ -243,7 +277,7 @@ $recent_products = $db->query("SELECT p.id, p.name, p.price, p.category, p.creat
     
     <div class="container">
         <div class="warning-box">
-            <p><strong>ℹ️ Editor Mode:</strong> You can add, edit, and delete products. You cannot access orders, revenue reports, or admin settings.</p>
+            <p><strong>ℹ️ Editor Mode:</strong> You can add, edit, and delete products. You can view orders and revenue. You cannot change admin settings or user accounts.</p>
         </div>
         
         <div class="stats-grid">
@@ -254,6 +288,18 @@ $recent_products = $db->query("SELECT p.id, p.name, p.price, p.category, p.creat
             <div class="stat-card">
                 <div class="stat-label">Total Variants</div>
                 <div class="stat-value"><?php echo $stats['total_variants']; ?></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Orders</div>
+                <div class="stat-value"><?php echo $stats['total_orders']; ?></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Revenue</div>
+                <div class="stat-value">$<?php echo number_format($stats['total_revenue'], 2); ?></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pending Orders</div>
+                <div class="stat-value"><?php echo $stats['pending_orders']; ?></div>
             </div>
         </div>
         
@@ -293,6 +339,36 @@ $recent_products = $db->query("SELECT p.id, p.name, p.price, p.category, p.creat
                 </table>
             <?php else: ?>
                 <p style="padding: 20px; color: #666; text-align: center;">No products yet. Click "+ Add Product" to create your first one.</p>
+            <?php endif; ?>
+        </div>
+        
+        <div class="card">
+            <h2>Recent Orders</h2>
+            <?php if (!empty($recent_orders)): ?>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Customer</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($recent_orders as $order): ?>
+                            <tr>
+                                <td><strong>#<?php echo htmlspecialchars($order['order_number']); ?></strong></td>
+                                <td><?php echo htmlspecialchars($order['customer_name']); ?></td>
+                                <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
+                                <td><span class="status <?php echo $order['status']; ?>"><?php echo ucfirst($order['status']); ?></span></td>
+                                <td><?php echo date('M d, Y', strtotime($order['created_at'])); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p style="padding: 20px; color: #666; text-align: center;">No orders yet</p>
             <?php endif; ?>
         </div>
     </div>
