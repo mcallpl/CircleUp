@@ -1,0 +1,22 @@
+# Secrets — these live on the server only
+.env
+config.php
+
+# Dependencies — installed via composer on server
+vendor/
+composer.phar
+composer.lock
+
+# OS files
+.DS_Store
+
+# IDE / Claude
+.claude/
+.vscode/
+
+# Deploy scripts (contain server details)
+deploy-web.sh
+deploy-sync.sh
+
+# Uploads (managed on server, not in git)
+uploads/

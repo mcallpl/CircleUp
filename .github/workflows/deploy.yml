@@ -1,0 +1,36 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy via rsync over SSH
+        uses: easingthemes/ssh-deploy@v5.1.0
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+          REMOTE_HOST: 64.227.108.128
+          REMOTE_USER: root
+          TARGET: /var/www/html/CircleUp/
+          EXCLUDE: >-
+            .git/,
+            .github/,
+            .gitignore,
+            .DS_Store,
+            .claude/,
+            .vscode/,
+            deploy-web.sh,
+            deploy-sync.sh,
+            CLAUDE.md,
+            vendor/,
+            composer.phar,
+            composer.lock,
+            config.php,
+            .env,
+            uploads/,
+            *.md
