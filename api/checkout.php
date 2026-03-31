@@ -34,7 +34,6 @@ try {
                 'currency' => 'usd',
                 'product_data' => [
                     'name' => $item['name'] ?? 'Product',
-                    'images' => !empty($item['image']) ? [$item['image']] : [],
                 ],
                 'unit_amount' => intval($price * 100), // Convert to cents
             ],
@@ -50,13 +49,17 @@ try {
         exit();
     }
     
+    // Stripe requires HTTPS URLs that are publicly accessible
+    // Use your domain name, not IP address
+    $base_url = 'https://www.peoplestar.com';
+    
     // Create Stripe session
     $session = \Stripe\Checkout\Session::create([
         'payment_method_types' => ['card'],
         'line_items' => $line_items,
         'mode' => 'payment',
-        'success_url' => 'https://' . $_SERVER['HTTP_HOST'] . '/CircleUp/store/success.php?session_id={CHECKOUT_SESSION_ID}',
-        'cancel_url' => 'https://' . $_SERVER['HTTP_HOST'] . '/CircleUp/store/?cancelled=1',
+        'success_url' => $base_url . '/CircleUp/store/success.php?session_id={CHECKOUT_SESSION_ID}',
+        'cancel_url' => $base_url . '/CircleUp/store/?cancelled=1',
         'customer_email' => $data['email'] ?? '',
     ]);
     
