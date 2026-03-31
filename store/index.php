@@ -44,9 +44,25 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CircleUp — Premium American Apparel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>CircleUp Store — Premium Apparel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --navy: #0a1628;
+            --navy-mid: #1a2744;
+            --navy-light: #243456;
+            --red: #b22234;
+            --red-bright: #e8293b;
+            --red-deep: #8b1a28;
+            --white: #f5f0e8;
+            --white-pure: #ffffff;
+            --silver: #c0c0c0;
+            --silver-light: #e0ddd5;
+            --gold: #c9a84c;
+            --gold-bright: #ffd700;
+            --chrome: #8a8a8a;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -58,21 +74,40 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         }
 
         body {
-            font-family: 'Barlow', -apple-system, sans-serif;
-            background: #fff;
-            color: #000;
+            font-family: 'Barlow Condensed', sans-serif;
+            background: var(--navy);
+            color: var(--white);
             line-height: 1.6;
+        }
+
+        /* PATRIOTIC STRIPES */
+        .flag-stripes-top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            z-index: 100;
+            background: repeating-linear-gradient(
+                90deg,
+                var(--red) 0px,
+                var(--red) 33.33%,
+                var(--white-pure) 33.33%,
+                var(--white-pure) 66.66%,
+                var(--navy-mid) 66.66%,
+                var(--navy-mid) 100%
+            );
         }
 
         /* HEADER */
         header {
             position: fixed;
-            top: 0;
+            top: 6px;
             left: 0;
             right: 0;
             z-index: 1000;
-            background: #fff;
-            border-bottom: 2px solid #000;
+            background: var(--navy-mid);
+            border-bottom: 2px solid var(--gold);
             padding: 20px 60px;
             display: flex;
             justify-content: space-between;
@@ -83,42 +118,41 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             font-family: 'Oswald', sans-serif;
             font-size: 32px;
             font-weight: 700;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #000;
+            letter-spacing: 3px;
+            color: var(--white-pure);
             text-decoration: none;
         }
 
         .logo span {
-            color: #c41e3a;
+            color: var(--red);
         }
 
         .header-nav {
             display: flex;
-            gap: 50px;
+            gap: 40px;
             align-items: center;
         }
 
         .header-nav a {
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #000;
+            color: var(--gold);
             text-decoration: none;
             transition: color 0.3s;
         }
 
         .header-nav a:hover {
-            color: #c41e3a;
+            color: var(--white-pure);
         }
 
         .cart-btn {
             width: 45px;
             height: 45px;
-            background: #000;
-            border: 2px solid #000;
-            border-radius: 0;
+            background: var(--red);
+            border: 2px solid var(--gold);
+            border-radius: 2px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -129,16 +163,16 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         }
 
         .cart-btn:hover {
-            background: #c41e3a;
-            border-color: #c41e3a;
+            background: var(--red-bright);
+            box-shadow: 0 0 15px rgba(232, 41, 59, 0.6);
         }
 
         .cart-badge {
             position: absolute;
             top: -8px;
             right: -8px;
-            background: #c41e3a;
-            color: #fff;
+            background: var(--gold);
+            color: var(--navy);
             width: 24px;
             height: 24px;
             border-radius: 50%;
@@ -147,15 +181,13 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             justify-content: center;
             font-size: 11px;
             font-weight: 700;
-            font-family: 'Oswald', sans-serif;
         }
 
         /* HERO */
         .hero {
             margin-top: 85px;
-            padding: 100px 60px;
-            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
-            color: #fff;
+            padding: 80px 60px;
+            background: linear-gradient(135deg, var(--navy-light) 0%, var(--navy-mid) 100%);
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -164,12 +196,17 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         .hero::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('../circleup-hero.png') center/cover;
-            opacity: 0.15;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120%;
+            height: 120%;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(178, 34, 52, 0.1) 0%,
+                rgba(26, 39, 68, 0.3) 40%,
+                transparent 70%
+            );
             z-index: 0;
         }
 
@@ -180,37 +217,37 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
 
         .hero h1 {
             font-family: 'Oswald', sans-serif;
-            font-size: 72px;
+            font-size: 64px;
             font-weight: 700;
             line-height: 1;
             margin-bottom: 20px;
             letter-spacing: 2px;
-            text-transform: uppercase;
+            color: var(--white-pure);
         }
 
         .hero h1 span {
-            color: #c41e3a;
+            color: var(--gold-bright);
         }
 
         .hero p {
-            font-size: 20px;
-            font-weight: 300;
-            max-width: 700px;
+            font-size: 18px;
+            max-width: 600px;
             margin: 0 auto 40px;
             line-height: 1.8;
             letter-spacing: 1px;
+            color: var(--silver-light);
         }
 
         .cta-button {
             display: inline-block;
-            padding: 18px 50px;
-            background: #c41e3a;
-            color: #fff;
-            border: 3px solid #c41e3a;
+            padding: 16px 45px;
+            background: var(--red);
+            color: var(--white-pure);
+            border: 2px solid var(--gold);
             border-radius: 0;
             font-family: 'Oswald', sans-serif;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             text-decoration: none;
             letter-spacing: 2px;
@@ -219,92 +256,93 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         }
 
         .cta-button:hover {
-            background: transparent;
-            color: #c41e3a;
+            background: var(--red-bright);
+            box-shadow: 0 0 20px rgba(232, 41, 59, 0.7);
         }
 
         /* CATEGORIES */
         .categories-section {
-            padding: 80px 60px;
-            background: #f5f5f5;
-            border-top: 2px solid #000;
-            border-bottom: 2px solid #000;
+            padding: 70px 60px;
+            background: var(--navy-mid);
+            border-top: 2px solid var(--gold);
+            border-bottom: 2px solid var(--gold);
         }
 
         .section-title {
             font-family: 'Oswald', sans-serif;
-            font-size: 48px;
+            font-size: 42px;
             font-weight: 700;
-            margin-bottom: 50px;
+            margin-bottom: 45px;
             letter-spacing: 2px;
-            text-transform: uppercase;
+            color: var(--gold-bright);
         }
 
         .categories-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
         }
 
         .category-card {
-            padding: 25px;
-            background: #fff;
-            border: 2px solid #000;
+            padding: 20px;
+            background: transparent;
+            border: 2px solid var(--gold);
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
             text-decoration: none;
-            color: #000;
+            color: var(--white);
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             letter-spacing: 1px;
             text-transform: uppercase;
-            position: relative;
         }
 
         .category-card:hover,
         .category-card.active {
-            background: #000;
-            color: #fff;
+            background: var(--red);
+            border-color: var(--red-bright);
+            color: var(--white-pure);
+            box-shadow: 0 0 15px rgba(232, 41, 59, 0.5);
         }
 
         .category-count {
-            font-size: 11px;
-            opacity: 0.7;
-            margin-top: 8px;
+            font-size: 10px;
+            opacity: 0.8;
+            margin-top: 6px;
         }
 
-        /* PRODUCTS SECTION */
+        /* PRODUCTS */
         .products-section {
-            padding: 80px 60px;
-            background: #fff;
+            padding: 70px 60px;
+            background: var(--navy);
         }
 
         .products-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 60px;
-            border-bottom: 3px solid #000;
-            padding-bottom: 30px;
+            margin-bottom: 50px;
+            border-bottom: 2px solid var(--gold);
+            padding-bottom: 20px;
         }
 
         .products-header h2 {
             font-family: 'Oswald', sans-serif;
-            font-size: 48px;
+            font-size: 42px;
             font-weight: 700;
             letter-spacing: 2px;
-            text-transform: uppercase;
+            color: var(--gold-bright);
         }
 
         .sort-select {
-            padding: 12px 16px;
-            background: #fff;
-            border: 2px solid #000;
-            color: #000;
+            padding: 10px 15px;
+            background: var(--navy-mid);
+            border: 2px solid var(--gold);
+            color: var(--gold);
             border-radius: 0;
-            font-size: 12px;
-            font-family: 'Barlow', sans-serif;
+            font-size: 11px;
+            font-family: 'Barlow Condensed', sans-serif;
             cursor: pointer;
             font-weight: 600;
             letter-spacing: 1px;
@@ -316,9 +354,8 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 40px;
-            grid-auto-rows: auto;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 35px;
         }
 
         .product-card {
@@ -326,46 +363,45 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             transition: all 0.3s;
             display: flex;
             flex-direction: column;
-            border: 2px solid #f0f0f0;
+            background: var(--navy-light);
+            border: 1px solid var(--gold);
             padding: 0;
         }
 
         .product-card:hover {
-            border-color: #000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-color: var(--red);
+            box-shadow: 0 0 20px rgba(178, 34, 52, 0.4);
             transform: translateY(-5px);
         }
 
         .product-image {
             width: 100%;
             aspect-ratio: 1 / 1;
-            background: #f5f5f5;
+            background: var(--navy-mid);
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 0;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 1px solid var(--gold);
         }
 
         .product-image img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            padding: 20px;
-            background: #fff;
+            padding: 15px;
         }
 
         .product-image.empty {
-            color: #999;
-            font-size: 13px;
+            color: var(--chrome);
+            font-size: 12px;
         }
 
         .product-info {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            padding: 25px;
+            padding: 22px;
         }
 
         .product-category {
@@ -373,24 +409,23 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
-            color: #c41e3a;
+            color: var(--red);
             margin-bottom: 10px;
         }
 
         .product-name {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
-            margin-bottom: 12px;
-            color: #000;
+            margin-bottom: 10px;
+            color: var(--white-pure);
             line-height: 1.4;
-            letter-spacing: 0.5px;
         }
 
         .product-desc {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 20px;
-            line-height: 1.6;
+            font-size: 12px;
+            color: var(--silver);
+            margin-bottom: 16px;
+            line-height: 1.5;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -403,93 +438,86 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             justify-content: space-between;
             align-items: center;
             margin-top: auto;
-            padding-top: 15px;
-            border-top: 1px solid #f0f0f0;
+            padding-top: 12px;
+            border-top: 1px solid var(--gold);
         }
 
         .product-price {
             font-family: 'Oswald', sans-serif;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            color: #000;
-            letter-spacing: 1px;
+            color: var(--gold-bright);
         }
 
         .add-to-cart {
-            padding: 10px 18px;
-            background: #000;
-            border: 2px solid #000;
-            color: #fff;
+            padding: 9px 16px;
+            background: var(--red);
+            border: 2px solid var(--gold);
+            color: var(--white-pure);
             border-radius: 0;
             cursor: pointer;
             font-family: 'Oswald', sans-serif;
-            font-weight: 600;
-            font-size: 11px;
+            font-weight: 700;
+            font-size: 10px;
             letter-spacing: 1.5px;
             text-transform: uppercase;
             transition: all 0.3s;
         }
 
         .add-to-cart:hover {
-            background: #c41e3a;
-            border-color: #c41e3a;
+            background: var(--red-bright);
+            box-shadow: 0 0 12px rgba(232, 41, 59, 0.6);
         }
 
         /* EMPTY STATE */
         .empty-state {
             text-align: center;
-            padding: 100px 40px;
+            padding: 80px 40px;
         }
 
         .empty-state h3 {
             font-family: 'Oswald', sans-serif;
-            font-size: 36px;
+            font-size: 32px;
             margin-bottom: 16px;
-            text-transform: uppercase;
+            color: var(--gold-bright);
             letter-spacing: 2px;
         }
 
         .empty-state p {
-            color: #666;
-            margin-bottom: 32px;
-            font-size: 15px;
-            letter-spacing: 1px;
+            color: var(--silver);
+            margin-bottom: 28px;
+            font-size: 14px;
         }
 
         /* FOOTER */
         footer {
-            background: #000;
-            color: #fff;
-            padding: 60px;
+            background: var(--navy-mid);
+            color: var(--silver-light);
+            padding: 50px 60px;
             text-align: center;
-            border-top: 3px solid #c41e3a;
-            font-size: 12px;
+            border-top: 2px solid var(--gold);
+            font-size: 11px;
             letter-spacing: 1px;
         }
 
         footer a {
-            color: #c41e3a;
+            color: var(--gold);
             text-decoration: none;
             font-weight: 600;
         }
 
         footer a:hover {
-            text-decoration: underline;
+            color: var(--white-pure);
         }
 
         /* RESPONSIVE */
         @media (max-width: 768px) {
             header {
-                padding: 15px 30px;
+                padding: 12px 30px;
             }
 
             .logo {
                 font-size: 24px;
-                letter-spacing: 2px;
-            }
-
-            .header-nav {
-                gap: 20px;
             }
 
             .hero {
@@ -498,22 +526,17 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             }
 
             .hero h1 {
-                font-size: 42px;
+                font-size: 40px;
             }
 
             .hero p {
-                font-size: 16px;
+                font-size: 14px;
             }
 
             .categories-section,
             .products-section {
                 padding-left: 30px;
                 padding-right: 30px;
-            }
-
-            .section-title,
-            .products-header h2 {
-                font-size: 32px;
             }
 
             .products-grid {
@@ -524,12 +547,14 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             .products-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 20px;
+                gap: 16px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="flag-stripes-top"></div>
+
     <!-- HEADER -->
     <header>
         <a href="/CircleUp/store/" class="logo">Circle<span>Up</span></a>
@@ -546,8 +571,8 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
     <div class="hero">
         <div class="hero-content">
             <h1>Circle<span>Up</span></h1>
-            <p>Premium American Apparel for Champions</p>
-            <a href="#products" class="cta-button">Shop Now</a>
+            <p>Premium Apparel for Leaders</p>
+            <a href="#products" class="cta-button">Shop Collection</a>
         </div>
     </div>
 
@@ -556,7 +581,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         <h2 class="section-title">Collections</h2>
         <div class="categories-grid">
             <a href="/CircleUp/store/" class="category-card <?php echo !$category ? 'active' : ''; ?>">
-                All
+                All Items
                 <div class="category-count"><?php echo count($products); ?></div>
             </a>
             <?php foreach ($categories as $cat): ?>
@@ -572,7 +597,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
     <!-- PRODUCTS -->
     <div class="products-section" id="products">
         <div class="products-header">
-            <h2><?php echo $search ? 'Search Results' : 'Featured Collection'; ?></h2>
+            <h2><?php echo $search ? 'Results' : 'Featured'; ?></h2>
             <select class="sort-select">
                 <option>Sort: Newest</option>
                 <option>Price: Low to High</option>
@@ -601,7 +626,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
                                 <?php echo htmlspecialchars($product['name']); ?>
                             </div>
                             <div class="product-desc">
-                                <?php echo htmlspecialchars(substr($product['description'] ?? '', 0, 90)); ?>
+                                <?php echo htmlspecialchars(substr($product['description'] ?? '', 0, 85)); ?>
                             </div>
                             <div class="product-footer">
                                 <div class="product-price">
@@ -617,8 +642,8 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             </div>
         <?php else: ?>
             <div class="empty-state">
-                <h3>No Products Found</h3>
-                <p>Check back soon for new collections</p>
+                <h3>No Products</h3>
+                <p>Check back soon</p>
                 <a href="/CircleUp/store/" class="cta-button">View All</a>
             </div>
         <?php endif; ?>
@@ -626,7 +651,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
 
     <!-- FOOTER -->
     <footer>
-        <p>&copy; 2026 <a href="#">CircleUp</a> — Premium American Apparel | <a href="/CircleUp/admin/login.php">Admin</a></p>
+        <p>&copy; 2026 <a href="#">CircleUp</a> — Premium Apparel | <a href="/CircleUp/admin/login.php">Admin</a></p>
     </footer>
 
     <script src="cart.js"></script>
@@ -635,16 +660,17 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: #c41e3a;
-            color: #fff;
-            padding: 16px 24px;
+            background: var(--red);
+            color: var(--white-pure);
+            padding: 14px 22px;
             border-radius: 0;
-            font-size: 13px;
+            font-size: 12px;
             z-index: 10000;
             animation: slideIn 0.3s ease;
             font-family: 'Oswald', sans-serif;
             letter-spacing: 1px;
             font-weight: 600;
+            border: 1px solid var(--gold);
         }
 
         @keyframes slideIn {
