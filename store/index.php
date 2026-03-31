@@ -44,8 +44,8 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CircleUp — Premium Apparel for Winners</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>CircleUp — Premium American Apparel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -58,9 +58,10 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: #fafafa;
-            color: #1a1a1a;
+            font-family: 'Barlow', -apple-system, sans-serif;
+            background: #fff;
+            color: #000;
+            line-height: 1.6;
         }
 
         /* HEADER */
@@ -71,232 +72,252 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             right: 0;
             z-index: 1000;
             background: #fff;
-            border-bottom: 1px solid #e8e8e8;
-            padding: 16px 40px;
+            border-bottom: 2px solid #000;
+            padding: 20px 60px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            color: #1a1a1a;
+            font-family: 'Oswald', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #000;
             text-decoration: none;
         }
 
         .logo span {
-            color: #d4a574;
+            color: #c41e3a;
         }
 
         .header-nav {
             display: flex;
-            gap: 32px;
+            gap: 50px;
             align-items: center;
         }
 
         .header-nav a {
-            font-size: 13px;
-            font-weight: 500;
-            color: #666;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #000;
             text-decoration: none;
-            transition: color 0.2s;
-            letter-spacing: 0.3px;
+            transition: color 0.3s;
         }
 
         .header-nav a:hover {
-            color: #1a1a1a;
+            color: #c41e3a;
         }
 
         .cart-btn {
-            width: 38px;
-            height: 38px;
-            background: #f5f5f5;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
+            width: 45px;
+            height: 45px;
+            background: #000;
+            border: 2px solid #000;
+            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 20px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            position: relative;
         }
 
         .cart-btn:hover {
-            background: #f0f0f0;
-            border-color: #d4a574;
+            background: #c41e3a;
+            border-color: #c41e3a;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #c41e3a;
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            font-family: 'Oswald', sans-serif;
         }
 
         /* HERO */
         .hero {
-            margin-top: 60px;
-            padding: 80px 40px;
-            background: linear-gradient(180deg, #fafafa 0%, #f5f5f5 100%);
-            border-bottom: 1px solid #e8e8e8;
+            margin-top: 85px;
+            padding: 100px 60px;
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+            color: #fff;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('../circleup-hero.png') center/cover;
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
         }
 
         .hero h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 48px;
-            font-weight: 600;
-            line-height: 1.2;
-            margin-bottom: 16px;
-            color: #1a1a1a;
-            letter-spacing: -0.8px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 72px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        .hero h1 .highlight {
-            color: #d4a574;
+        .hero h1 span {
+            color: #c41e3a;
         }
 
         .hero p {
-            font-size: 16px;
-            color: #666;
-            max-width: 550px;
-            margin: 0 auto 32px;
-            line-height: 1.6;
-            font-weight: 400;
+            font-size: 20px;
+            font-weight: 300;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+            letter-spacing: 1px;
         }
 
         .cta-button {
             display: inline-block;
-            padding: 13px 28px;
-            background: #1a1a1a;
+            padding: 18px 50px;
+            background: #c41e3a;
             color: #fff;
-            border: none;
-            border-radius: 4px;
-            font-weight: 500;
+            border: 3px solid #c41e3a;
+            border-radius: 0;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s;
             text-decoration: none;
-            letter-spacing: 0.5px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
         }
 
         .cta-button:hover {
-            background: #333;
-            transform: translateY(-1px);
+            background: transparent;
+            color: #c41e3a;
         }
 
         /* CATEGORIES */
         .categories-section {
-            padding: 50px 40px;
-            background: #fff;
-            border-bottom: 1px solid #e8e8e8;
-        }
-
-        .categories-section-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-label {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #999;
-            margin-bottom: 12px;
+            padding: 80px 60px;
+            background: #f5f5f5;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
         }
 
         .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
-            font-weight: 600;
-            margin-bottom: 32px;
-            color: #1a1a1a;
-            letter-spacing: -0.5px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 50px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .categories-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
         }
 
         .category-card {
-            padding: 14px 16px;
-            background: #f5f5f5;
-            border: 1px solid #e8e8e8;
-            border-radius: 4px;
+            padding: 25px;
+            background: #fff;
+            border: 2px solid #000;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             text-decoration: none;
-            color: #666;
-            font-weight: 500;
-            font-size: 13px;
+            color: #000;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
         }
 
         .category-card:hover,
         .category-card.active {
-            background: #1a1a1a;
-            border-color: #1a1a1a;
+            background: #000;
             color: #fff;
         }
 
         .category-count {
             font-size: 11px;
-            color: #999;
-            margin-top: 4px;
-            font-weight: 400;
-        }
-
-        .category-card:hover .category-count,
-        .category-card.active .category-count {
-            color: #ccc;
+            opacity: 0.7;
+            margin-top: 8px;
         }
 
         /* PRODUCTS SECTION */
         .products-section {
-            padding: 50px 40px 80px;
-            background: #fafafa;
-        }
-
-        .products-section-content {
-            max-width: 1200px;
-            margin: 0 auto;
+            padding: 80px 60px;
+            background: #fff;
         }
 
         .products-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 48px;
+            align-items: center;
+            margin-bottom: 60px;
+            border-bottom: 3px solid #000;
+            padding-bottom: 30px;
         }
 
         .products-header h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
-            font-weight: 600;
-            color: #1a1a1a;
-            letter-spacing: -0.5px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
         .sort-select {
-            padding: 9px 12px;
+            padding: 12px 16px;
             background: #fff;
-            border: 1px solid #e0e0e0;
-            color: #666;
-            border-radius: 4px;
+            border: 2px solid #000;
+            color: #000;
+            border-radius: 0;
             font-size: 12px;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Barlow', sans-serif;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
 
         .sort-select:focus {
             outline: none;
-            border-color: #d4a574;
         }
 
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 32px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 40px;
             grid-auto-rows: auto;
         }
 
@@ -305,68 +326,71 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             transition: all 0.3s;
             display: flex;
             flex-direction: column;
+            border: 2px solid #f0f0f0;
+            padding: 0;
         }
 
-        .product-card:hover .product-image {
-            opacity: 0.95;
+        .product-card:hover {
+            border-color: #000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
         }
 
         .product-image {
             width: 100%;
             aspect-ratio: 1 / 1;
-            background: #f0f0f0;
-            border-radius: 6px;
+            background: #f5f5f5;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            border: 1px solid #e8e8e8;
-            transition: opacity 0.3s;
+            margin-bottom: 0;
+            border-bottom: 2px solid #f0f0f0;
         }
 
         .product-image img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            padding: 12px;
+            padding: 20px;
             background: #fff;
         }
 
         .product-image.empty {
             color: #999;
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .product-info {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            padding: 25px;
         }
 
         .product-category {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 1px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            color: #999;
-            margin-bottom: 6px;
+            color: #c41e3a;
+            margin-bottom: 10px;
         }
 
         .product-name {
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 10px;
-            color: #1a1a1a;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #000;
             line-height: 1.4;
-            letter-spacing: -0.2px;
+            letter-spacing: 0.5px;
         }
 
         .product-desc {
             font-size: 13px;
-            color: #888;
-            margin-bottom: 16px;
-            line-height: 1.5;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -379,34 +403,36 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             justify-content: space-between;
             align-items: center;
             margin-top: auto;
-            padding-top: 12px;
-            border-top: 1px solid #e8e8e8;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
         }
 
         .product-price {
-            font-size: 15px;
-            font-weight: 600;
-            color: #1a1a1a;
-            letter-spacing: -0.2px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #000;
+            letter-spacing: 1px;
         }
 
         .add-to-cart {
-            padding: 9px 16px;
-            background: #1a1a1a;
-            border: 1px solid #1a1a1a;
+            padding: 10px 18px;
+            background: #000;
+            border: 2px solid #000;
             color: #fff;
-            border-radius: 4px;
+            border-radius: 0;
             cursor: pointer;
-            font-weight: 500;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
             font-size: 11px;
-            letter-spacing: 0.5px;
-            transition: all 0.2s;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
+            transition: all 0.3s;
         }
 
         .add-to-cart:hover {
-            background: #333;
-            border-color: #333;
+            background: #c41e3a;
+            border-color: #c41e3a;
         }
 
         /* EMPTY STATE */
@@ -416,34 +442,35 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         }
 
         .empty-state h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            margin-bottom: 12px;
-            color: #1a1a1a;
-            font-weight: 600;
+            font-family: 'Oswald', sans-serif;
+            font-size: 36px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .empty-state p {
-            color: #888;
-            margin-bottom: 28px;
-            font-size: 14px;
+            color: #666;
+            margin-bottom: 32px;
+            font-size: 15px;
+            letter-spacing: 1px;
         }
 
         /* FOOTER */
         footer {
-            background: #fff;
-            border-top: 1px solid #e8e8e8;
-            padding: 50px 40px;
+            background: #000;
+            color: #fff;
+            padding: 60px;
             text-align: center;
-            color: #999;
+            border-top: 3px solid #c41e3a;
             font-size: 12px;
+            letter-spacing: 1px;
         }
 
         footer a {
-            color: #1a1a1a;
+            color: #c41e3a;
             text-decoration: none;
             font-weight: 600;
-            margin: 0 4px;
         }
 
         footer a:hover {
@@ -453,54 +480,51 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         /* RESPONSIVE */
         @media (max-width: 768px) {
             header {
-                padding: 12px 20px;
+                padding: 15px 30px;
             }
 
             .logo {
-                font-size: 18px;
+                font-size: 24px;
+                letter-spacing: 2px;
             }
 
             .header-nav {
-                gap: 16px;
+                gap: 20px;
             }
 
             .hero {
-                padding: 50px 20px;
-                margin-top: 50px;
+                padding: 50px 30px;
+                margin-top: 70px;
             }
 
             .hero h1 {
-                font-size: 32px;
+                font-size: 42px;
             }
 
             .hero p {
-                font-size: 14px;
+                font-size: 16px;
             }
 
             .categories-section,
             .products-section {
-                padding-left: 20px;
-                padding-right: 20px;
+                padding-left: 30px;
+                padding-right: 30px;
             }
 
             .section-title,
             .products-header h2 {
-                font-size: 24px;
-            }
-
-            .categories-grid {
-                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                font-size: 32px;
             }
 
             .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 16px;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
             }
 
             .products-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 16px;
+                gap: 20px;
             }
         }
     </style>
@@ -513,99 +537,96 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             <a href="/CircleUp/store/">Shop</a>
             <a href="/CircleUp/admin/login.php">Admin</a>
             <a href="/CircleUp/store/cart.php" style="position: relative;">
-                <div class="cart-btn">🛒<span class="cart-badge" style="position: absolute; top: -6px; right: -6px; background: #d4a574; color: #1a1a1a; width: 20px; height: 20px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 11px; font-weight: 600;"></span></div>
+                <div class="cart-btn">🛒<span class="cart-badge"></span></div>
             </a>
         </nav>
     </header>
 
     <!-- HERO -->
     <div class="hero">
-        <h1>Premium Apparel for <span class="highlight">Winners</span></h1>
-        <p>Thoughtfully designed. Built to last. For people who care about quality.</p>
-        <a href="#products" class="cta-button">Shop Collection</a>
+        <div class="hero-content">
+            <h1>Circle<span>Up</span></h1>
+            <p>Premium American Apparel for Champions</p>
+            <a href="#products" class="cta-button">Shop Now</a>
+        </div>
     </div>
 
     <!-- CATEGORIES -->
     <div class="categories-section">
-        <div class="categories-section-content">
-            <div class="section-label">Explore</div>
-            <h2 class="section-title">Shop by Category</h2>
-            <div class="categories-grid">
-                <a href="/CircleUp/store/" class="category-card <?php echo !$category ? 'active' : ''; ?>">
-                    All
-                    <div class="category-count"><?php echo count($products); ?></div>
+        <h2 class="section-title">Collections</h2>
+        <div class="categories-grid">
+            <a href="/CircleUp/store/" class="category-card <?php echo !$category ? 'active' : ''; ?>">
+                All
+                <div class="category-count"><?php echo count($products); ?></div>
+            </a>
+            <?php foreach ($categories as $cat): ?>
+                <a href="/CircleUp/store/?category=<?php echo urlencode($cat['category']); ?>" 
+                   class="category-card <?php echo $category === $cat['category'] ? 'active' : ''; ?>">
+                    <?php echo htmlspecialchars(PRODUCT_CATEGORIES[$cat['category']] ?? $cat['category']); ?>
+                    <div class="category-count"><?php echo $cat['count']; ?></div>
                 </a>
-                <?php foreach ($categories as $cat): ?>
-                    <a href="/CircleUp/store/?category=<?php echo urlencode($cat['category']); ?>" 
-                       class="category-card <?php echo $category === $cat['category'] ? 'active' : ''; ?>">
-                        <?php echo htmlspecialchars(PRODUCT_CATEGORIES[$cat['category']] ?? $cat['category']); ?>
-                        <div class="category-count"><?php echo $cat['count']; ?></div>
-                    </a>
-                <?php endforeach; ?>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 
     <!-- PRODUCTS -->
     <div class="products-section" id="products">
-        <div class="products-section-content">
-            <div class="products-header">
-                <h2><?php echo $search ? 'Results' : 'Featured'; ?></h2>
-                <select class="sort-select">
-                    <option>Newest</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
-                </select>
-            </div>
+        <div class="products-header">
+            <h2><?php echo $search ? 'Search Results' : 'Featured Collection'; ?></h2>
+            <select class="sort-select">
+                <option>Sort: Newest</option>
+                <option>Price: Low to High</option>
+                <option>Price: High to Low</option>
+            </select>
+        </div>
 
-            <?php if (!empty($products)): ?>
-                <div class="products-grid">
-                    <?php foreach ($products as $product): ?>
-                        <div class="product-card">
-                            <div class="product-image<?php echo !$product['image_url'] ? ' empty' : ''; ?>">
-                                <?php if ($product['image_url']): ?>
-                                    <img src="<?php echo htmlspecialchars($product['image_url']); ?>" 
-                                         alt="<?php echo htmlspecialchars($product['name']); ?>" 
-                                         loading="lazy">
-                                <?php else: ?>
-                                    No Image Available
-                                <?php endif; ?>
+        <?php if (!empty($products)): ?>
+            <div class="products-grid">
+                <?php foreach ($products as $product): ?>
+                    <div class="product-card">
+                        <div class="product-image<?php echo !$product['image_url'] ? ' empty' : ''; ?>">
+                            <?php if ($product['image_url']): ?>
+                                <img src="<?php echo htmlspecialchars($product['image_url']); ?>" 
+                                     alt="<?php echo htmlspecialchars($product['name']); ?>" 
+                                     loading="lazy">
+                            <?php else: ?>
+                                No Image
+                            <?php endif; ?>
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">
+                                <?php echo htmlspecialchars(PRODUCT_CATEGORIES[$product['category']] ?? $product['category']); ?>
                             </div>
-                            <div class="product-info">
-                                <div class="product-category">
-                                    <?php echo htmlspecialchars(PRODUCT_CATEGORIES[$product['category']] ?? $product['category']); ?>
+                            <div class="product-name">
+                                <?php echo htmlspecialchars($product['name']); ?>
+                            </div>
+                            <div class="product-desc">
+                                <?php echo htmlspecialchars(substr($product['description'] ?? '', 0, 90)); ?>
+                            </div>
+                            <div class="product-footer">
+                                <div class="product-price">
+                                    $<?php echo number_format($product['price'], 0); ?>
                                 </div>
-                                <div class="product-name">
-                                    <?php echo htmlspecialchars($product['name']); ?>
-                                </div>
-                                <div class="product-desc">
-                                    <?php echo htmlspecialchars(substr($product['description'] ?? '', 0, 90)); ?>
-                                </div>
-                                <div class="product-footer">
-                                    <div class="product-price">
-                                        $<?php echo number_format($product['price'], 0); ?>
-                                    </div>
-                                    <button class="add-to-cart" onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo htmlspecialchars($product['name']); ?>', <?php echo $product['price']; ?>, '<?php echo htmlspecialchars($product['category']); ?>', '<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>')">
-                                        Add
-                                    </button>
-                                </div>
+                                <button class="add-to-cart" onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo htmlspecialchars($product['name']); ?>', <?php echo $product['price']; ?>, '<?php echo htmlspecialchars($product['category']); ?>', '<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>')">
+                                    Add
+                                </button>
                             </div>
                         </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php else: ?>
-                <div class="empty-state">
-                    <h3>No Products Available</h3>
-                    <p>Check back soon for new collections</p>
-                    <a href="/CircleUp/store/" class="cta-button">View All</a>
-                </div>
-            <?php endif; ?>
-        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <div class="empty-state">
+                <h3>No Products Found</h3>
+                <p>Check back soon for new collections</p>
+                <a href="/CircleUp/store/" class="cta-button">View All</a>
+            </div>
+        <?php endif; ?>
     </div>
 
     <!-- FOOTER -->
     <footer>
-        <p>&copy; 2026 <a href="#">CircleUp</a> | Premium apparel for high performers</p>
+        <p>&copy; 2026 <a href="#">CircleUp</a> — Premium American Apparel | <a href="/CircleUp/admin/login.php">Admin</a></p>
     </footer>
 
     <script src="cart.js"></script>
@@ -614,13 +635,16 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: #1a1a1a;
+            background: #c41e3a;
             color: #fff;
             padding: 16px 24px;
-            border-radius: 4px;
-            font-size: 14px;
+            border-radius: 0;
+            font-size: 13px;
             z-index: 10000;
             animation: slideIn 0.3s ease;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
 
         @keyframes slideIn {
