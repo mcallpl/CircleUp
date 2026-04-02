@@ -174,6 +174,47 @@ if (isAdminLoggedIn()) {
         button:active {
             transform: translateY(0);
         }
+
+        .login-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .login-footer-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .login-footer-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            opacity: 0.6;
+        }
+
+        .login-footer-nav a:hover {
+            color: var(--white-pure);
+            opacity: 1;
+        }
+
+        .login-footer-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
     </style>
 </head>
 <body>
@@ -202,6 +243,14 @@ if (isAdminLoggedIn()) {
             
             <button type="submit">Sign In</button>
         </form>
+    </div>
+
+    <div class="login-footer">
+        <nav class="login-footer-nav">
+            <a href="/CircleUp/">Home</a>
+            <span class="login-footer-dot"></span>
+            <a href="/CircleUp/store/">Shop</a>
+        </nav>
     </div>
 </body>
 </html>

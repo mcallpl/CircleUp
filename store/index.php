@@ -493,11 +493,47 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         footer {
             background: var(--navy-mid);
             color: var(--silver-light);
-            padding: 50px 60px;
+            padding: 40px 60px 30px;
             text-align: center;
             border-top: 2px solid var(--gold);
             font-size: 11px;
             letter-spacing: 1px;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+
+        .footer-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .footer-nav a:hover {
+            color: var(--white-pure);
+        }
+
+        .footer-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
+        footer p {
+            color: var(--chrome);
+            font-size: 11px;
         }
 
         footer a {
@@ -651,7 +687,16 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
 
     <!-- FOOTER -->
     <footer>
-        <p>&copy; 2026 <a href="#">CircleUp</a> — Premium Apparel | <a href="/CircleUp/admin/login.php">Admin</a></p>
+        <nav class="footer-nav">
+            <a href="/CircleUp/">Home</a>
+            <span class="footer-dot"></span>
+            <a href="/CircleUp/store/">Shop</a>
+            <span class="footer-dot"></span>
+            <a href="/CircleUp/store/cart.php">Cart</a>
+            <span class="footer-dot"></span>
+            <a href="/CircleUp/admin/login.php">Admin</a>
+        </nav>
+        <p>&copy; 2026 CircleUp — Premium Apparel</p>
     </footer>
 
     <script src="cart.js"></script>

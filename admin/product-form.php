@@ -40,19 +40,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Handle image upload
     if (!empty($_FILES['image']['name'])) {
         $file = $_FILES['image'];
-        
-        if ($file['size'] > MAX_FILE_SIZE) {
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            $upload_errors = [
+                UPLOAD_ERR_INI_SIZE => 'File exceeds server upload limit (upload_max_filesize)',
+                UPLOAD_ERR_FORM_SIZE => 'File exceeds form upload limit',
+                UPLOAD_ERR_PARTIAL => 'File was only partially uploaded',
+                UPLOAD_ERR_NO_FILE => 'No file was uploaded',
+                UPLOAD_ERR_NO_TMP_DIR => 'Server missing temporary folder',
+                UPLOAD_ERR_CANT_WRITE => 'Server failed to write file to disk',
+            ];
+            $error = $upload_errors[$file['error']] ?? 'Unknown upload error (code ' . $file['error'] . ')';
+        } elseif ($file['size'] > MAX_FILE_SIZE) {
             $error = 'File too large (max 5MB)';
         } elseif (!in_array($file['type'], ALLOWED_TYPES)) {
             $error = 'Invalid file type. Only JPG, PNG, WebP allowed.';
         } else {
             $filename = uniqid('product_') . '_' . time() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
             $filepath = UPLOAD_DIR . $filename;
-            
+
             if (move_uploaded_file($file['tmp_name'], $filepath)) {
                 $image_url = UPLOAD_URL . $filename;
             } else {
-                $error = 'Failed to upload image';
+                $error = 'Failed to upload image — check directory permissions';
             }
         }
     } elseif ($product && !empty($product['image_url'])) {
@@ -139,6 +149,67 @@ $is_edit = $product !== null;
         .navbar h1 {
             font-size: 24px;
             color: #667eea;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .navbar-links a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+        }
+
+        .navbar-links a:hover {
+            color: #333;
+        }
+
+        .product-footer {
+            background: white;
+            border-top: 1px solid #eee;
+            padding: 30px 60px 24px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .product-footer .footer-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 12px;
+        }
+
+        .product-footer .footer-nav a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+        }
+
+        .product-footer .footer-nav a:hover {
+            color: #333;
+        }
+
+        .product-footer .footer-dot {
+            width: 4px;
+            height: 4px;
+            background: #667eea;
+            border-radius: 50%;
+            opacity: 0.4;
+            display: inline-block;
+        }
+
+        .product-footer p {
+            color: #aaa;
+            font-size: 11px;
         }
         
         .container {
@@ -306,6 +377,11 @@ $is_edit = $product !== null;
 <body>
     <div class="navbar">
         <h1>CircleUp Admin</h1>
+        <nav class="navbar-links">
+            <a href="/CircleUp/">Home</a>
+            <a href="/CircleUp/store/">Shop</a>
+            <a href="<?php echo $admin['role'] === 'editor' ? '/CircleUp/admin/editor-dashboard.php' : '/CircleUp/admin/dashboard.php'; ?>">Dashboard</a>
+        </nav>
     </div>
     
     <div class="container">
@@ -436,6 +512,19 @@ $is_edit = $product !== null;
         </div>
     </div>
     
+    <footer class="product-footer">
+        <nav class="footer-nav">
+            <a href="/CircleUp/">Home</a>
+            <span class="footer-dot"></span>
+            <a href="/CircleUp/store/">Shop</a>
+            <span class="footer-dot"></span>
+            <a href="<?php echo $admin['role'] === 'editor' ? '/CircleUp/admin/editor-dashboard.php' : '/CircleUp/admin/dashboard.php'; ?>">Dashboard</a>
+            <span class="footer-dot"></span>
+            <a href="/CircleUp/admin/product-form.php">Add Product</a>
+        </nav>
+        <p>&copy; 2026 CircleUp — Admin Panel</p>
+    </footer>
+
     <script>
         function addVariant() {
             const container = document.getElementById('variants-container');

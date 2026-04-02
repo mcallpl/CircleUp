@@ -324,6 +324,51 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
             font-size: 14px;
         }
 
+        .admin-footer {
+            background: var(--navy-mid);
+            border-top: 2px solid var(--gold);
+            padding: 40px 60px 30px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+
+        .footer-nav a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .footer-nav a:hover {
+            color: var(--white-pure);
+        }
+
+        .footer-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.5;
+        }
+
+        .admin-footer p {
+            color: #8a8a8a;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
         @media (max-width: 768px) {
             .navbar {
                 padding: 0 20px;
@@ -451,5 +496,18 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
             <?php endif; ?>
         </div>
     </div>
+
+    <footer class="admin-footer">
+        <nav class="footer-nav">
+            <a href="/CircleUp/">Home</a>
+            <span class="footer-dot"></span>
+            <a href="/CircleUp/store/">Shop</a>
+            <span class="footer-dot"></span>
+            <a href="/CircleUp/admin/editor-dashboard.php">Dashboard</a>
+            <span class="footer-dot"></span>
+            <a href="/CircleUp/admin/product-form.php">Add Product</a>
+        </nav>
+        <p>&copy; 2026 CircleUp — Editor Panel</p>
+    </footer>
 </body>
 </html>
