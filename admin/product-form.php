@@ -10,21 +10,28 @@ $product_id = $_GET['id'] ?? null;
 $product = null;
 $variants = [];
 
+$product_images = [];
+
 if ($product_id) {
     $stmt = $db->prepare("SELECT * FROM products WHERE id = ?");
     $stmt->bind_param("i", $product_id);
     $stmt->execute();
     $product = $stmt->get_result()->fetch_assoc();
-    
+
     if (!$product) {
         header('Location: /CircleUp/admin/dashboard.php');
         exit();
     }
-    
+
     $stmt = $db->prepare("SELECT * FROM variants WHERE product_id = ?");
     $stmt->bind_param("i", $product_id);
     $stmt->execute();
     $variants = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+    $stmt = $db->prepare("SELECT * FROM product_images WHERE product_id = ? ORDER BY sort_order ASC");
+    $stmt->bind_param("i", $product_id);
+    $stmt->execute();
+    $product_images = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
 $success = '';
@@ -37,37 +44,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category = $_POST['category'] ?? '';
     $image_url = '';
     
-    // Handle image upload
-    if (!empty($_FILES['image']['name'])) {
-        $file = $_FILES['image'];
-
-        if ($file['error'] !== UPLOAD_ERR_OK) {
-            $upload_errors = [
-                UPLOAD_ERR_INI_SIZE => 'File exceeds server upload limit (upload_max_filesize)',
-                UPLOAD_ERR_FORM_SIZE => 'File exceeds form upload limit',
-                UPLOAD_ERR_PARTIAL => 'File was only partially uploaded',
-                UPLOAD_ERR_NO_FILE => 'No file was uploaded',
-                UPLOAD_ERR_NO_TMP_DIR => 'Server missing temporary folder',
-                UPLOAD_ERR_CANT_WRITE => 'Server failed to write file to disk',
-            ];
-            $error = $upload_errors[$file['error']] ?? 'Unknown upload error (code ' . $file['error'] . ')';
-        } elseif ($file['size'] > MAX_FILE_SIZE) {
-            $error = 'File too large (max 5MB)';
-        } elseif (!in_array($file['type'], ALLOWED_TYPES)) {
-            $error = 'Invalid file type. Only JPG, PNG, WebP allowed.';
-        } else {
-            $filename = uniqid('product_') . '_' . time() . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+    // Handle image uploads (multiple files)
+    $uploaded_images = [];
+    if (!empty($_FILES['images']['name'][0])) {
+        $file_count = count($_FILES['images']['name']);
+        for ($i = 0; $i < $file_count; $i++) {
+            if ($_FILES['images']['error'][$i] === UPLOAD_ERR_NO_FILE) continue;
+            if ($_FILES['images']['error'][$i] !== UPLOAD_ERR_OK) {
+                $error = 'Upload error on file ' . ($i + 1);
+                break;
+            }
+            if ($_FILES['images']['size'][$i] > MAX_FILE_SIZE) {
+                $error = 'File ' . ($i + 1) . ' too large (max 5MB)';
+                break;
+            }
+            if (!in_array($_FILES['images']['type'][$i], ALLOWED_TYPES)) {
+                $error = 'File ' . ($i + 1) . ': invalid type. Only JPG, PNG, WebP allowed.';
+                break;
+            }
+            $filename = uniqid('product_') . '_' . time() . '_' . $i . '.' . pathinfo($_FILES['images']['name'][$i], PATHINFO_EXTENSION);
             $filepath = UPLOAD_DIR . $filename;
-
-            if (move_uploaded_file($file['tmp_name'], $filepath)) {
-                $image_url = UPLOAD_URL . $filename;
+            if (move_uploaded_file($_FILES['images']['tmp_name'][$i], $filepath)) {
+                $uploaded_images[] = UPLOAD_URL . $filename;
             } else {
-                $error = 'Failed to upload image — check directory permissions';
+                $error = 'Failed to upload file ' . ($i + 1) . ' — check directory permissions';
+                break;
             }
         }
+    }
+
+    // Keep existing primary image_url for the products table
+    $image_url = '';
+    if (!empty($uploaded_images)) {
+        $image_url = $uploaded_images[0];
     } elseif ($product && !empty($product['image_url'])) {
         $image_url = $product['image_url'];
     }
+
+    // Handle deletion of existing images
+    $delete_images = $_POST['delete_images'] ?? [];
     
     if (!$error) {
         if ($product_id) {
@@ -82,7 +97,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if ($stmt->execute()) {
             $product_id = $product_id ?: $db->insert_id;
-            
+
+            // Delete removed images
+            if (!empty($delete_images)) {
+                foreach ($delete_images as $img_id) {
+                    $stmt = $db->prepare("DELETE FROM product_images WHERE id = ? AND product_id = ?");
+                    $stmt->bind_param("ii", $img_id, $product_id);
+                    $stmt->execute();
+                }
+            }
+
+            // Add newly uploaded images
+            if (!empty($uploaded_images)) {
+                // Get current max sort_order
+                $max_sort = $db->query("SELECT COALESCE(MAX(sort_order), -1) as m FROM product_images WHERE product_id = $product_id")->fetch_assoc()['m'];
+                foreach ($uploaded_images as $idx => $img_url) {
+                    $sort = $max_sort + 1 + $idx;
+                    $stmt = $db->prepare("INSERT INTO product_images (product_id, image_url, sort_order) VALUES (?, ?, ?)");
+                    $stmt->bind_param("isi", $product_id, $img_url, $sort);
+                    $stmt->execute();
+                }
+            }
+
+            // Update products.image_url to match the first image in product_images
+            $first_img = $db->query("SELECT image_url FROM product_images WHERE product_id = $product_id ORDER BY sort_order ASC LIMIT 1")->fetch_assoc();
+            if ($first_img) {
+                $stmt = $db->prepare("UPDATE products SET image_url = ? WHERE id = ?");
+                $stmt->bind_param("si", $first_img['image_url'], $product_id);
+                $stmt->execute();
+            }
+
             // Handle variants
             if (!empty($_POST['variants'])) {
                 $db->query("DELETE FROM variants WHERE product_id = $product_id");
@@ -280,13 +324,47 @@ $is_edit = $product !== null;
             grid-column: 1 / -1;
         }
         
-        .image-preview {
-            margin-top: 10px;
+        .existing-images {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 12px;
         }
-        
-        .image-preview img {
-            max-width: 200px;
+
+        .existing-image {
+            position: relative;
+            border: 2px solid #ddd;
             border-radius: 6px;
+            overflow: hidden;
+            width: 140px;
+        }
+
+        .existing-image img {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-actions {
+            padding: 6px 8px;
+            background: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+        }
+
+        .image-label {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .delete-label {
+            color: #ff6b6b;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
         }
         
         .variants-section {
@@ -426,11 +504,22 @@ $is_edit = $product !== null;
                     </div>
                     
                     <div class="form-group full-width">
-                        <label for="image">Product Image</label>
-                        <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/webp">
-                        <?php if ($product && $product['image_url']): ?>
-                            <div class="image-preview">
-                                <img src="<?php echo htmlspecialchars($product['image_url']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        <label>Product Images (first image = hero/primary)</label>
+                        <input type="file" name="images[]" multiple accept="image/jpeg,image/png,image/webp">
+                        <p style="font-size: 12px; color: #888; margin-top: 6px;">Select multiple files. The first image (or existing first) will be the hero image.</p>
+                        <?php if (!empty($product_images)): ?>
+                            <div class="existing-images">
+                                <?php foreach ($product_images as $img): ?>
+                                    <div class="existing-image">
+                                        <img src="<?php echo htmlspecialchars($img['image_url']); ?>" alt="Product image">
+                                        <div class="image-actions">
+                                            <span class="image-label"><?php echo $img['sort_order'] === 0 ? 'Hero' : 'Supporting'; ?></span>
+                                            <label class="delete-label">
+                                                <input type="checkbox" name="delete_images[]" value="<?php echo $img['id']; ?>"> Delete
+                                            </label>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
                         <?php endif; ?>
                     </div>

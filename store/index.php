@@ -546,6 +546,120 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             color: var(--white-pure);
         }
 
+        /* ========== SCROLLING PRODUCT MARQUEE ========== */
+        .marquee-section {
+            padding: 50px 0;
+            overflow: hidden;
+            position: relative;
+            border-top: 1px solid rgba(201, 168, 76, 0.15);
+            border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+        }
+
+        .marquee-label {
+            font-family: 'Oswald', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marquee-scroll 30s linear infinite;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes marquee-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .marquee-card {
+            flex-shrink: 0;
+            width: 220px;
+            margin: 0 12px;
+            background: var(--navy-light);
+            border: 1px solid transparent;
+            border-radius: 2px;
+            overflow: hidden;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.3s, transform 0.3s;
+            display: block;
+        }
+
+        .marquee-card:hover {
+            border-color: var(--red);
+            transform: translateY(-6px);
+        }
+
+        .marquee-card-image {
+            width: 220px;
+            height: 220px;
+            background: var(--navy-mid);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .marquee-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 15px;
+        }
+
+        .marquee-card-info {
+            padding: 14px 16px;
+        }
+
+        .marquee-card-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--white-pure);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .marquee-card-price {
+            font-family: 'Oswald', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gold-bright);
+        }
+
+        /* Fade edges */
+        .marquee-section::before,
+        .marquee-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .marquee-section::before {
+            left: 0;
+            background: linear-gradient(90deg, var(--navy), transparent);
+        }
+
+        .marquee-section::after {
+            right: 0;
+            background: linear-gradient(270deg, var(--navy), transparent);
+        }
+
         /* RESPONSIVE */
         @media (max-width: 768px) {
             header {
@@ -595,6 +709,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
     <header>
         <a href="/CircleUp/store/" class="logo">Circle<span>Up</span></a>
         <nav class="header-nav">
+            <a href="/CircleUp/">Home</a>
             <a href="/CircleUp/store/">Shop</a>
             <a href="/CircleUp/admin/login.php">Admin</a>
             <a href="/CircleUp/store/cart.php" style="position: relative;">
@@ -611,6 +726,31 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             <a href="#products" class="cta-button">Shop Collection</a>
         </div>
     </div>
+
+    <!-- SCROLLING PRODUCT BAR -->
+    <?php if (!empty($products)): ?>
+    <div class="marquee-section">
+        <div class="marquee-label">Trending Now</div>
+        <div class="marquee-track">
+            <?php
+            // Duplicate products to create seamless loop
+            $marquee_products = array_merge($products, $products);
+            foreach ($marquee_products as $mp): ?>
+                <a href="/CircleUp/store/product_page.php?id=<?php echo $mp['id']; ?>" class="marquee-card">
+                    <div class="marquee-card-image">
+                        <?php if ($mp['image_url']): ?>
+                            <img src="<?php echo htmlspecialchars($mp['image_url']); ?>" alt="<?php echo htmlspecialchars($mp['name']); ?>" loading="lazy">
+                        <?php endif; ?>
+                    </div>
+                    <div class="marquee-card-info">
+                        <div class="marquee-card-name"><?php echo htmlspecialchars($mp['name']); ?></div>
+                        <div class="marquee-card-price">$<?php echo number_format($mp['price'], 0); ?></div>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php endif; ?>
 
     <!-- CATEGORIES -->
     <div class="categories-section">
@@ -644,11 +784,11 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         <?php if (!empty($products)): ?>
             <div class="products-grid">
                 <?php foreach ($products as $product): ?>
-                    <div class="product-card">
+                    <a href="/CircleUp/store/product_page.php?id=<?php echo $product['id']; ?>" class="product-card" style="text-decoration: none; color: inherit;">
                         <div class="product-image<?php echo !$product['image_url'] ? ' empty' : ''; ?>">
                             <?php if ($product['image_url']): ?>
-                                <img src="<?php echo htmlspecialchars($product['image_url']); ?>" 
-                                     alt="<?php echo htmlspecialchars($product['name']); ?>" 
+                                <img src="<?php echo htmlspecialchars($product['image_url']); ?>"
+                                     alt="<?php echo htmlspecialchars($product['name']); ?>"
                                      loading="lazy">
                             <?php else: ?>
                                 No Image
@@ -668,12 +808,12 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
                                 <div class="product-price">
                                     $<?php echo number_format($product['price'], 0); ?>
                                 </div>
-                                <button class="add-to-cart" onclick="addToCart(<?php echo $product['id']; ?>, '<?php echo htmlspecialchars($product['name']); ?>', <?php echo $product['price']; ?>, '<?php echo htmlspecialchars($product['category']); ?>', '<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>')">
+                                <button class="add-to-cart" onclick="event.preventDefault(); event.stopPropagation(); addToCart(<?php echo $product['id']; ?>, '<?php echo htmlspecialchars($product['name']); ?>', <?php echo $product['price']; ?>, '<?php echo htmlspecialchars($product['category']); ?>', '<?php echo htmlspecialchars($product['image_url'] ?? ''); ?>')">
                                     Add
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
