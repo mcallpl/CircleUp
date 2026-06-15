@@ -10,7 +10,7 @@ $db = getDB();
 $product_id = $_GET['id'] ?? null;
 
 if (!$product_id) {
-    header('Location: /CircleUp/admin/dashboard.php');
+    header('Location: /admin/dashboard.php');
     exit();
 }
 
@@ -21,7 +21,7 @@ $stmt->execute();
 $product = $stmt->get_result()->fetch_assoc();
 
 if (!$product) {
-    header('Location: /CircleUp/admin/dashboard.php');
+    header('Location: /admin/dashboard.php');
     exit();
 }
 
@@ -31,9 +31,9 @@ $stmt->bind_param("i", $product_id);
 
 if ($stmt->execute()) {
     logAction($admin['id'], 'product_deleted', ['product_id' => $product_id, 'name' => $product['name']]);
-    $redirect = $admin['role'] === 'editor' ? '/CircleUp/admin/editor-dashboard.php' : '/CircleUp/admin/dashboard.php';
+    $redirect = $admin['role'] === 'editor' ? '/admin/editor-dashboard.php' : '/admin/dashboard.php';
     header("Location: $redirect?deleted=1");
 } else {
-    header('Location: /CircleUp/admin/dashboard.php?error=1');
+    header('Location: /admin/dashboard.php?error=1');
 }
 exit();

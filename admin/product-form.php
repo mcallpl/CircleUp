@@ -19,7 +19,7 @@ if ($product_id) {
     $product = $stmt->get_result()->fetch_assoc();
 
     if (!$product) {
-        header('Location: /CircleUp/admin/dashboard.php');
+        header('Location: /admin/dashboard.php');
         exit();
     }
 
@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             logAction($admin['id'], 'product_' . ($product ? 'updated' : 'created'), ['product_id' => $product_id, 'name' => $name]);
             $success = 'Product ' . ($product ? 'updated' : 'created') . ' successfully!';
             
-            $redirect = $admin['role'] === 'editor' ? '/CircleUp/admin/editor-dashboard.php' : '/CircleUp/admin/dashboard.php';
+            $redirect = $admin['role'] === 'editor' ? '/admin/editor-dashboard.php' : '/admin/dashboard.php';
             header("Location: $redirect?success=1");
             exit();
         } else {
@@ -456,9 +456,9 @@ $is_edit = $product !== null;
     <div class="navbar">
         <h1>CircleUp Admin</h1>
         <nav class="navbar-links">
-            <a href="/CircleUp/">Home</a>
-            <a href="/CircleUp/store/">Shop</a>
-            <a href="<?php echo $admin['role'] === 'editor' ? '/CircleUp/admin/editor-dashboard.php' : '/CircleUp/admin/dashboard.php'; ?>">Dashboard</a>
+            <a href="/">Home</a>
+            <a href="/store/">Shop</a>
+            <a href="<?php echo $admin['role'] === 'editor' ? '/admin/editor-dashboard.php' : '/admin/dashboard.php'; ?>">Dashboard</a>
         </nav>
     </div>
     
@@ -595,7 +595,7 @@ $is_edit = $product !== null;
                     <button type="submit" class="btn btn-primary">
                         <?php echo $is_edit ? 'Update Product' : 'Create Product'; ?>
                     </button>
-                    <a href="<?php echo $admin['role'] === 'editor' ? '/CircleUp/admin/editor-dashboard.php' : '/CircleUp/admin/dashboard.php'; ?>" class="btn btn-secondary">Cancel</a>
+                    <a href="<?php echo $admin['role'] === 'editor' ? '/admin/editor-dashboard.php' : '/admin/dashboard.php'; ?>" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>
@@ -603,13 +603,13 @@ $is_edit = $product !== null;
     
     <footer class="product-footer">
         <nav class="footer-nav">
-            <a href="/CircleUp/">Home</a>
+            <a href="/">Home</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/store/">Shop</a>
+            <a href="/store/">Shop</a>
             <span class="footer-dot"></span>
-            <a href="<?php echo $admin['role'] === 'editor' ? '/CircleUp/admin/editor-dashboard.php' : '/CircleUp/admin/dashboard.php'; ?>">Dashboard</a>
+            <a href="<?php echo $admin['role'] === 'editor' ? '/admin/editor-dashboard.php' : '/admin/dashboard.php'; ?>">Dashboard</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/admin/product-form.php">Add Product</a>
+            <a href="/admin/product-form.php">Add Product</a>
         </nav>
         <p>&copy; 2026 CircleUp — Admin Panel</p>
     </footer>

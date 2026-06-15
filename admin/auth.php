@@ -9,7 +9,7 @@ function isAdminLoggedIn() {
 
 function requireAdmin() {
     if (!isAdminLoggedIn()) {
-        header('Location: /CircleUp/admin/login.php');
+        header('Location: /admin/login.php');
         exit();
     }
 }
@@ -90,7 +90,7 @@ function isAdminUser() {
 
 function requireEditor() {
     if (!isAdminLoggedIn() || !isEditor()) {
-        header('Location: /CircleUp/admin/login.php');
+        header('Location: /admin/login.php');
         exit();
     }
 }

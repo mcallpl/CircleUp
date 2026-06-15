@@ -5,7 +5,7 @@ $db = getDB();
 $product_id = $_GET['id'] ?? null;
 
 if (!$product_id) {
-    header('Location: /CircleUp/store/');
+    header('Location: /store/');
     exit();
 }
 
@@ -15,7 +15,7 @@ $stmt->execute();
 $product = $stmt->get_result()->fetch_assoc();
 
 if (!$product) {
-    header('Location: /CircleUp/store/');
+    header('Location: /store/');
     exit();
 }
 
@@ -583,12 +583,12 @@ $related = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     <div class="flag-stripes-top"></div>
 
     <header>
-        <a href="/CircleUp/store/" class="logo">Circle<span>Up</span></a>
+        <a href="/store/" class="logo">Circle<span>Up</span></a>
         <nav class="header-nav">
-            <a href="/CircleUp/">Home</a>
-            <a href="/CircleUp/store/">Shop</a>
-            <a href="/CircleUp/admin/login.php">Admin</a>
-            <a href="/CircleUp/store/cart.php" style="position: relative;">
+            <a href="/">Home</a>
+            <a href="/store/">Shop</a>
+            <a href="/admin/login.php">Admin</a>
+            <a href="/store/cart.php" style="position: relative;">
                 <div class="cart-btn">🛒<span class="cart-badge"></span></div>
             </a>
         </nav>
@@ -619,8 +619,8 @@ $related = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         <!-- PRODUCT DETAILS -->
         <div class="product-details">
             <div class="breadcrumb">
-                <a href="/CircleUp/store/">Shop</a> /
-                <a href="/CircleUp/store/?category=<?php echo urlencode($product['category']); ?>"><?php echo htmlspecialchars(PRODUCT_CATEGORIES[$product['category']] ?? $product['category']); ?></a> /
+                <a href="/store/">Shop</a> /
+                <a href="/store/?category=<?php echo urlencode($product['category']); ?>"><?php echo htmlspecialchars(PRODUCT_CATEGORIES[$product['category']] ?? $product['category']); ?></a> /
                 <?php echo htmlspecialchars($product['name']); ?>
             </div>
 
@@ -690,7 +690,7 @@ $related = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         <h2 class="related-title">You May Also Like</h2>
         <div class="related-grid">
             <?php foreach ($related as $rel): ?>
-                <a href="/CircleUp/store/product_page.php?id=<?php echo $rel['id']; ?>" class="related-card">
+                <a href="/store/product_page.php?id=<?php echo $rel['id']; ?>" class="related-card">
                     <div class="related-card-image">
                         <?php $rel_img = $rel['first_image'] ?: $rel['image_url']; ?>
                         <?php if ($rel_img): ?>
@@ -709,13 +709,13 @@ $related = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
     <footer>
         <nav class="footer-nav">
-            <a href="/CircleUp/">Home</a>
+            <a href="/">Home</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/store/">Shop</a>
+            <a href="/store/">Shop</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/store/cart.php">Cart</a>
+            <a href="/store/cart.php">Cart</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/admin/login.php">Admin</a>
+            <a href="/admin/login.php">Admin</a>
         </nav>
         <p>&copy; 2026 CircleUp — Premium Apparel</p>
     </footer>

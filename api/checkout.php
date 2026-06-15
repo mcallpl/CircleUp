@@ -56,8 +56,8 @@ try {
         'payment_method_types' => ['card'],
         'line_items' => $line_items,
         'mode' => 'payment',
-        'success_url' => $base_url . '/CircleUp/store/success.php?session_id={CHECKOUT_SESSION_ID}',
-        'cancel_url' => $base_url . '/CircleUp/store/?cancelled=1',
+        'success_url' => $base_url . '/store/success.php?session_id={CHECKOUT_SESSION_ID}',
+        'cancel_url' => $base_url . '/store/?cancelled=1',
         'customer_email' => $data['email'] ?? '',
     ]);
     

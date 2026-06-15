@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     
     if (loginAdmin($username, $password)) {
-        header('Location: /CircleUp/admin/dashboard.php');
+        header('Location: /admin/dashboard.php');
         exit();
     } else {
         $error = 'Invalid username or password';
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 if (isAdminLoggedIn()) {
-    header('Location: /CircleUp/admin/dashboard.php');
+    header('Location: /admin/dashboard.php');
     exit();
 }
 ?>
@@ -247,9 +247,9 @@ if (isAdminLoggedIn()) {
 
     <div class="login-footer">
         <nav class="login-footer-nav">
-            <a href="/CircleUp/">Home</a>
+            <a href="/">Home</a>
             <span class="login-footer-dot"></span>
-            <a href="/CircleUp/store/">Shop</a>
+            <a href="/store/">Shop</a>
         </nav>
     </div>
 </body>

@@ -4,7 +4,7 @@ require_once '../config.php';
 $session_id = $_GET['session_id'] ?? null;
 
 if (!$session_id) {
-    header('Location: /CircleUp/store/');
+    header('Location: /store/');
     exit();
 }
 
@@ -267,7 +267,7 @@ try {
     <div class="flag-stripe-top"></div>
 
     <header>
-        <a href="/CircleUp/store/" class="logo">Circle<span>Up</span></a>
+        <a href="/store/" class="logo">Circle<span>Up</span></a>
     </header>
 
     <div class="success-container">
@@ -287,20 +287,20 @@ try {
         </div>
 
         <div class="action-buttons">
-            <a href="/CircleUp/store/" class="btn primary">Continue Shopping</a>
-            <a href="/CircleUp/" class="btn">Go Home</a>
+            <a href="/store/" class="btn primary">Continue Shopping</a>
+            <a href="/" class="btn">Go Home</a>
         </div>
     </div>
 
     <footer>
         <nav class="footer-nav">
-            <a href="/CircleUp/">Home</a>
+            <a href="/">Home</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/store/">Shop</a>
+            <a href="/store/">Shop</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/store/cart.php">Cart</a>
+            <a href="/store/cart.php">Cart</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/admin/login.php">Admin</a>
+            <a href="/admin/login.php">Admin</a>
         </nav>
         <p>&copy; 2026 CircleUp — Premium Apparel</p>
     </footer>

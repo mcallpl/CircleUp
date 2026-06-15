@@ -417,11 +417,11 @@ require_once '../config.php';
     <div class="flag-stripe-top"></div>
 
     <header>
-        <a href="/CircleUp/store/" class="logo">Circle<span>Up</span></a>
+        <a href="/store/" class="logo">Circle<span>Up</span></a>
         <nav class="header-nav">
-            <a href="/CircleUp/store/">Shop</a>
-            <a href="/CircleUp/admin/login.php">Admin</a>
-            <a href="/CircleUp/store/cart.php" style="position: relative;">
+            <a href="/store/">Shop</a>
+            <a href="/admin/login.php">Admin</a>
+            <a href="/store/cart.php" style="position: relative;">
                 <div class="cart-btn">🛒<span class="cart-badge"></span></div>
             </a>
         </nav>
@@ -450,19 +450,19 @@ require_once '../config.php';
                 <span id="total-price">$0</span>
             </div>
             <button class="checkout-btn" id="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
-            <a href="/CircleUp/store/" class="continue-shopping">Continue Shopping</a>
+            <a href="/store/" class="continue-shopping">Continue Shopping</a>
         </div>
     </div>
 
     <footer>
         <nav class="footer-nav">
-            <a href="/CircleUp/">Home</a>
+            <a href="/">Home</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/store/">Shop</a>
+            <a href="/store/">Shop</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/store/cart.php">Cart</a>
+            <a href="/store/cart.php">Cart</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/admin/login.php">Admin</a>
+            <a href="/admin/login.php">Admin</a>
         </nav>
         <p>&copy; 2026 CircleUp — Premium Apparel</p>
     </footer>
@@ -477,7 +477,7 @@ require_once '../config.php';
                     <div class="empty-cart">
                         <h3>Your cart is empty</h3>
                         <p>Add items to get started</p>
-                        <a href="/CircleUp/store/" style="display: inline-block; padding: 11px 24px; background: var(--red); color: var(--white-pure); border: 2px solid var(--gold); border-radius: 2px; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 11px; cursor: pointer; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s;">Continue Shopping</a>
+                        <a href="/store/" style="display: inline-block; padding: 11px 24px; background: var(--red); color: var(--white-pure); border: 2px solid var(--gold); border-radius: 2px; font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 11px; cursor: pointer; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s;">Continue Shopping</a>
                     </div>
                 `;
                 document.getElementById('checkout-btn').disabled = true;
@@ -528,7 +528,7 @@ require_once '../config.php';
                 return;
             }
 
-            fetch('/CircleUp/api/checkout.php', {
+            fetch('/api/checkout.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

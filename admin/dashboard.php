@@ -9,7 +9,7 @@ $admin = getCurrentAdmin();
 
 // Route editors to their dashboard
 if ($admin['role'] === 'editor') {
-    header('Location: /CircleUp/admin/editor-dashboard.php');
+    header('Location: /admin/editor-dashboard.php');
     exit();
 }
 
@@ -382,15 +382,15 @@ $all_users = $db->query("SELECT username, email, role, login_count, last_login_a
     <div class="navbar">
         <h1>CircleUp Admin</h1>
         <div class="navbar-center">
-            <a href="/CircleUp/">Home</a>
-            <a href="/CircleUp/store/">Store</a>
+            <a href="/">Home</a>
+            <a href="/store/">Store</a>
         </div>
         <div class="navbar-right">
             <div class="admin-info">
                 <p>Administrator</p>
                 <strong><?php echo htmlspecialchars($admin['username']); ?></strong>
             </div>
-            <form action="/CircleUp/admin/logout.php" method="POST" style="margin: 0;">
+            <form action="/admin/logout.php" method="POST" style="margin: 0;">
                 <button class="logout-btn">Logout</button>
             </form>
         </div>
@@ -480,20 +480,20 @@ $all_users = $db->query("SELECT username, email, role, login_count, last_login_a
 
             <div class="card">
                 <h3 style="color: var(--gold-bright); margin-bottom: 20px; font-family: 'Oswald', sans-serif;">Product Management</h3>
-                <a href="/CircleUp/admin/product-form.php" class="btn">+ Add New Product</a>
+                <a href="/admin/product-form.php" class="btn">+ Add New Product</a>
             </div>
         </div>
     </div>
 
     <footer class="admin-footer">
         <nav class="footer-nav">
-            <a href="/CircleUp/">Home</a>
+            <a href="/">Home</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/store/">Shop</a>
+            <a href="/store/">Shop</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/admin/dashboard.php">Dashboard</a>
+            <a href="/admin/dashboard.php">Dashboard</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/admin/product-form.php">Add Product</a>
+            <a href="/admin/product-form.php">Add Product</a>
         </nav>
         <p>&copy; 2026 CircleUp — Admin Panel</p>
     </footer>

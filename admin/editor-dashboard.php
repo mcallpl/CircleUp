@@ -9,7 +9,7 @@ $admin = getCurrentAdmin();
 
 // Check if editor
 if ($admin['role'] !== 'editor') {
-    header('Location: /CircleUp/admin/dashboard.php');
+    header('Location: /admin/dashboard.php');
     exit();
 }
 
@@ -393,8 +393,8 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
     <div class="navbar">
         <h1>CircleUp Editor</h1>
         <div class="navbar-center">
-            <a href="/CircleUp/">Home</a>
-            <a href="/CircleUp/store/">Store</a>
+            <a href="/">Home</a>
+            <a href="/store/">Store</a>
         </div>
         <div class="navbar-right">
             <div class="admin-info">
@@ -402,7 +402,7 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
                 <strong><?php echo htmlspecialchars($admin['username']); ?></strong>
                 <div class="role-badge">Editor</div>
             </div>
-            <form action="/CircleUp/admin/logout.php" method="POST" style="margin: 0;">
+            <form action="/admin/logout.php" method="POST" style="margin: 0;">
                 <button class="logout-btn">Logout</button>
             </form>
         </div>
@@ -434,7 +434,7 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
 
         <div class="card">
             <h3>Products</h3>
-            <a href="/CircleUp/admin/product-form.php" class="btn">+ Add Product</a>
+            <a href="/admin/product-form.php" class="btn">+ Add Product</a>
             <?php if (!empty($recent_products)): ?>
                 <table>
                     <thead>
@@ -454,8 +454,8 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
                                 <td>$<?php echo number_format($product['price'], 0); ?></td>
                                 <td><?php echo date('M d, Y', strtotime($product['created_at'])); ?></td>
                                 <td>
-                                    <a href="/CircleUp/admin/product-form.php?id=<?php echo $product['id']; ?>" style="color: var(--gold); text-decoration: none; font-weight: 700;">Edit</a> | 
-                                    <a href="/CircleUp/admin/delete-product.php?id=<?php echo $product['id']; ?>" style="color: var(--red-bright); text-decoration: none; font-weight: 700;" onclick="return confirm('Delete?')">Delete</a>
+                                    <a href="/admin/product-form.php?id=<?php echo $product['id']; ?>" style="color: var(--gold); text-decoration: none; font-weight: 700;">Edit</a> | 
+                                    <a href="/admin/delete-product.php?id=<?php echo $product['id']; ?>" style="color: var(--red-bright); text-decoration: none; font-weight: 700;" onclick="return confirm('Delete?')">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -499,13 +499,13 @@ $recent_orders = $db->query("SELECT o.id, o.order_number, o.customer_name, o.tot
 
     <footer class="admin-footer">
         <nav class="footer-nav">
-            <a href="/CircleUp/">Home</a>
+            <a href="/">Home</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/store/">Shop</a>
+            <a href="/store/">Shop</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/admin/editor-dashboard.php">Dashboard</a>
+            <a href="/admin/editor-dashboard.php">Dashboard</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/admin/product-form.php">Add Product</a>
+            <a href="/admin/product-form.php">Add Product</a>
         </nav>
         <p>&copy; 2026 CircleUp — Editor Panel</p>
     </footer>

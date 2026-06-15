@@ -707,12 +707,12 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
 
     <!-- HEADER -->
     <header>
-        <a href="/CircleUp/store/" class="logo">Circle<span>Up</span></a>
+        <a href="/store/" class="logo">Circle<span>Up</span></a>
         <nav class="header-nav">
-            <a href="/CircleUp/">Home</a>
-            <a href="/CircleUp/store/">Shop</a>
-            <a href="/CircleUp/admin/login.php">Admin</a>
-            <a href="/CircleUp/store/cart.php" style="position: relative;">
+            <a href="/">Home</a>
+            <a href="/store/">Shop</a>
+            <a href="/admin/login.php">Admin</a>
+            <a href="/store/cart.php" style="position: relative;">
                 <div class="cart-btn">🛒<span class="cart-badge"></span></div>
             </a>
         </nav>
@@ -736,7 +736,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             // Duplicate products to create seamless loop
             $marquee_products = array_merge($products, $products);
             foreach ($marquee_products as $mp): ?>
-                <a href="/CircleUp/store/product_page.php?id=<?php echo $mp['id']; ?>" class="marquee-card">
+                <a href="/store/product_page.php?id=<?php echo $mp['id']; ?>" class="marquee-card">
                     <div class="marquee-card-image">
                         <?php if ($mp['image_url']): ?>
                             <img src="<?php echo htmlspecialchars($mp['image_url']); ?>" alt="<?php echo htmlspecialchars($mp['name']); ?>" loading="lazy">
@@ -756,12 +756,12 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
     <div class="categories-section">
         <h2 class="section-title">Collections</h2>
         <div class="categories-grid">
-            <a href="/CircleUp/store/" class="category-card <?php echo !$category ? 'active' : ''; ?>">
+            <a href="/store/" class="category-card <?php echo !$category ? 'active' : ''; ?>">
                 All Items
                 <div class="category-count"><?php echo count($products); ?></div>
             </a>
             <?php foreach ($categories as $cat): ?>
-                <a href="/CircleUp/store/?category=<?php echo urlencode($cat['category']); ?>" 
+                <a href="/store/?category=<?php echo urlencode($cat['category']); ?>" 
                    class="category-card <?php echo $category === $cat['category'] ? 'active' : ''; ?>">
                     <?php echo htmlspecialchars(PRODUCT_CATEGORIES[$cat['category']] ?? $cat['category']); ?>
                     <div class="category-count"><?php echo $cat['count']; ?></div>
@@ -784,7 +784,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
         <?php if (!empty($products)): ?>
             <div class="products-grid">
                 <?php foreach ($products as $product): ?>
-                    <a href="/CircleUp/store/product_page.php?id=<?php echo $product['id']; ?>" class="product-card" style="text-decoration: none; color: inherit;">
+                    <a href="/store/product_page.php?id=<?php echo $product['id']; ?>" class="product-card" style="text-decoration: none; color: inherit;">
                         <div class="product-image<?php echo !$product['image_url'] ? ' empty' : ''; ?>">
                             <?php if ($product['image_url']): ?>
                                 <img src="<?php echo htmlspecialchars($product['image_url']); ?>"
@@ -820,7 +820,7 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
             <div class="empty-state">
                 <h3>No Products</h3>
                 <p>Check back soon</p>
-                <a href="/CircleUp/store/" class="cta-button">View All</a>
+                <a href="/store/" class="cta-button">View All</a>
             </div>
         <?php endif; ?>
     </div>
@@ -828,13 +828,13 @@ $categories = $categories_result->fetch_all(MYSQLI_ASSOC);
     <!-- FOOTER -->
     <footer>
         <nav class="footer-nav">
-            <a href="/CircleUp/">Home</a>
+            <a href="/">Home</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/store/">Shop</a>
+            <a href="/store/">Shop</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/store/cart.php">Cart</a>
+            <a href="/store/cart.php">Cart</a>
             <span class="footer-dot"></span>
-            <a href="/CircleUp/admin/login.php">Admin</a>
+            <a href="/admin/login.php">Admin</a>
         </nav>
         <p>&copy; 2026 CircleUp — Premium Apparel</p>
     </footer>
